@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.style.TextAlign
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
@@ -94,7 +95,13 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                         }
                     }
                     CenterAlignedTopAppBar(
-                        title = { Text("Google Home", fontWeight = FontWeight.Bold, fontSize = 18.sp) },
+                        title = { 
+                            Text(
+                                "Google Home", 
+                                fontWeight = FontWeight.Bold, 
+                                fontSize = 18.sp
+                            ) 
+                        },
                         navigationIcon = {
                             IconButton(onClick = { coroutineScope.launch { drawerState.open() } }) {
                                 Icon(Icons.Default.Menu, contentDescription = "Menu")
@@ -106,6 +113,39 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                             }
                         }
                     )
+
+                    // Row 2: Scrollable Chips (Moved up from map)
+                    if (trackedChildrenIds.isNotEmpty()) {
+                        LazyRow(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Color.White)
+                                .padding(bottom = 8.dp),
+                            contentPadding = PaddingValues(horizontal = 16.dp)
+                        ) {
+                            items(trackedChildrenIds.toList()) { id ->
+                                val isActive = id == trackingId
+                                FilterChip(
+                                    selected = isActive,
+                                    onClick = { viewModel.startTracking(id) },
+                                    label = { 
+                                        Text(
+                                            if (isActive) {
+                                                childData?.name?.ifEmpty { "Active Child" } ?: "Active Child"
+                                            } else {
+                                                id.take(6) + ".."
+                                            }
+                                        ) 
+                                    },
+                                    colors = FilterChipDefaults.filterChipColors(
+                                        selectedContainerColor = Color(0xFF1A73E8),
+                                        selectedLabelColor = Color.White
+                                    ),
+                                    modifier = Modifier.padding(end = 8.dp)
+                                )
+                            }
+                        }
+                    }
                 }
             },
             bottomBar = {
@@ -308,35 +348,10 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                                         )
                                     }
                                 }
-                                
-                                // Child Selection Overlay
-                                if (trackedChildrenIds.size > 1) {
-                                    LazyRow(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(top = 16.dp),
-                                        contentPadding = PaddingValues(horizontal = 16.dp)
-                                    ) {
-                                        items(trackedChildrenIds.toList()) { id ->
-                                            FilterChip(
-                                                selected = id == trackingId,
-                                                onClick = { viewModel.startTracking(id) },
-                                                label = { Text(if (id == trackingId) child.name.ifEmpty { "Active Child" } else id.take(6) + "..") },
-                                                colors = FilterChipDefaults.filterChipColors(
-                                                    containerColor = Color.White.copy(alpha = 0.9f),
-                                                    selectedContainerColor = Color(0xFF1A73E8),
-                                                    selectedLabelColor = Color.White
-                                                ),
-                                                border = null,
-                                                modifier = Modifier.padding(end = 8.dp).shadow(2.dp, RoundedCornerShape(8.dp))
-                                            )
-                                        }
-                                    }
-                                }
                             }
                         }
                     }
-                } // This brace closes the 0 -> branch
+                }
                 1 -> {
                     // SAFETY SCREEN
                     Box(Modifier.fillMaxSize().padding(innerPadding), contentAlignment = Alignment.Center) {
@@ -360,8 +375,6 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                     }
                 }
             }
-        }
-    }
 
     if (showAddChildDialog) {
         AlertDialog(
@@ -425,6 +438,8 @@ fun ParentDashboard(viewModel: ParentViewModel) {
             }
         )
     }
+}
+}
 }
 
 @Composable
