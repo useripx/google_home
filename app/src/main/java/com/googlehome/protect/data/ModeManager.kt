@@ -25,6 +25,9 @@ class ModeManager(private val context: Context) {
     private val POWER_SAVING_MODE_KEY = androidx.datastore.preferences.core.booleanPreferencesKey("power_saving_enabled")
     private val GEOFENCE_RADIUS_KEY = androidx.datastore.preferences.core.floatPreferencesKey("geofence_radius")
     private val GEOFENCE_ENABLED_KEY = androidx.datastore.preferences.core.booleanPreferencesKey("geofence_enabled")
+    private val PARENT_ID_KEY = stringPreferencesKey("parent_id")
+    private val HOME_LAT_KEY = androidx.datastore.preferences.core.doublePreferencesKey("home_lat")
+    private val HOME_LON_KEY = androidx.datastore.preferences.core.doublePreferencesKey("home_lon")
 
     val appMode: Flow<AppMode> = context.dataStore.data
         .map { preferences ->
@@ -70,6 +73,16 @@ class ModeManager(private val context: Context) {
     val geofenceEnabled: Flow<Boolean> = context.dataStore.data
         .map { preferences ->
             preferences[GEOFENCE_ENABLED_KEY] ?: false
+        }
+
+    val parentId: Flow<String?> = context.dataStore.data
+        .map { preferences -> preferences[PARENT_ID_KEY] }
+
+    val homeLocation: Flow<Pair<Double, Double>?> = context.dataStore.data
+        .map { preferences -> 
+            val lat = preferences[HOME_LAT_KEY]
+            val lon = preferences[HOME_LON_KEY]
+            if (lat != null && lon != null) lat to lon else null
         }
 
     suspend fun setAppMode(mode: AppMode) {
@@ -133,6 +146,19 @@ class ModeManager(private val context: Context) {
     suspend fun setGeofenceEnabled(enabled: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[GEOFENCE_ENABLED_KEY] = enabled
+        }
+    }
+
+    suspend fun setParentId(id: String) {
+        context.dataStore.edit { preferences ->
+            preferences[PARENT_ID_KEY] = id
+        }
+    }
+
+    suspend fun setHomeLocation(lat: Double, lon: Double) {
+        context.dataStore.edit { preferences ->
+            preferences[HOME_LAT_KEY] = lat
+            preferences[HOME_LON_KEY] = lon
         }
     }
 }

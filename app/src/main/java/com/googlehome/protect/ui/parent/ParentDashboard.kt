@@ -63,22 +63,46 @@ fun ParentDashboard(viewModel: ParentViewModel) {
     val powerSavingEnabled by viewModel.powerSavingEnabled.collectAsState()
     val geofenceRadius by viewModel.geofenceRadius.collectAsState()
     val geofenceEnabled by viewModel.geofenceEnabled.collectAsState()
+    val etaMinutes by viewModel.etaMinutes.collectAsState()
+    val parentId by viewModel.parentId.collectAsState()
+    val homeLocation by viewModel.homeLocation.collectAsState()
 
     var showClearHistoryDialog by remember { mutableStateOf<String?>(null) }
     var showRemoveChildDialog by remember { mutableStateOf<String?>(null) }
     var showIntervalPicker by remember { mutableStateOf(false) }
 
     val batteryAlert by viewModel.batteryAlert.collectAsState()
+    val anomalyAlert by viewModel.anomalyAlert.collectAsState()
+    val emergencyAlert by viewModel.emergencyAlert.collectAsState()
+    val emergencyAudio by viewModel.emergencyAudio.collectAsState()
+    val geofenceAlert by viewModel.geofenceAlert.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(batteryAlert) {
         batteryAlert?.let {
-            snackbarHostState.showSnackbar(
-                message = it,
-                duration = SnackbarDuration.Indefinite,
-                actionLabel = "OK"
-            )
+            snackbarHostState.showSnackbar(it, actionLabel = "OK")
             viewModel.dismissBatteryAlert()
+        }
+    }
+    
+    LaunchedEffect(anomalyAlert) {
+        anomalyAlert?.let {
+            snackbarHostState.showSnackbar(it, actionLabel = "OK", duration = SnackbarDuration.Long)
+            viewModel.dismissAnomalyAlert()
+        }
+    }
+
+    LaunchedEffect(emergencyAlert) {
+        emergencyAlert?.let {
+            snackbarHostState.showSnackbar(it, actionLabel = "SIAGA", duration = SnackbarDuration.Indefinite)
+            viewModel.dismissEmergencyAlert()
+        }
+    }
+
+    LaunchedEffect(geofenceAlert) {
+        geofenceAlert?.let {
+            snackbarHostState.showSnackbar(it, actionLabel = "OK")
+            viewModel.dismissGeofenceAlert()
         }
     }
 
@@ -86,7 +110,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
         drawerState = drawerState,
         drawerContent = {
             ModalDrawerSheet {
-                Text("Google Home Protect", modifier = Modifier.padding(16.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text("Yogi Ario Protection v8.0", modifier = Modifier.padding(16.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 HorizontalDivider()
                 NavigationDrawerItem(
                     label = { Text("Profile") },
@@ -108,7 +132,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                     CenterAlignedTopAppBar(
                         title = { 
                             Text(
-                                "Google Home", 
+                                "Yogi Ario Smart Protection", 
                                 fontWeight = FontWeight.Bold, 
                                 fontSize = 18.sp
                             ) 
@@ -198,7 +222,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                         selected = selectedTab == 1,
                         onClick = { selectedTab = 1 },
                         icon = { Icon(Icons.Default.Shield, null) },
-                        label = { Text("Safety") }
+                        label = { Text("Asisten AI") }
                     )
                     NavigationBarItem(
                         selected = selectedTab == 2,
@@ -307,7 +331,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                                     Icon(Icons.Default.BatteryChargingFull, null, modifier = Modifier.size(14.dp), tint = Color(0xFF006E2C))
                                                     Spacer(modifier = Modifier.width(4.dp))
-                                                    Text("${child.battery}% • Connected", fontSize = 12.sp, color = Color.Gray)
+                                                    Text("${child.battery}% • ${child.networkStatus}", fontSize = 12.sp, color = Color.Gray)
                                                 }
                                             }
                                             Spacer(modifier = Modifier.weight(1f))
@@ -326,6 +350,15 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                                                 modifier = Modifier.background(Color(0xFF1A73E8), CircleShape)
                                             ) {
                                                 Icon(Icons.Default.Navigation, contentDescription = "Navigate", tint = Color.White)
+                                            }
+                                            Spacer(modifier = Modifier.width(8.dp))
+                                            IconButton(
+                                                onClick = {
+                                                    viewModel.triggerRemoteRing(child.id, true)
+                                                },
+                                                modifier = Modifier.background(Color(0xFFFF3B30), CircleShape)
+                                            ) {
+                                                Icon(Icons.Default.NotificationsActive, contentDescription = "Bunyikan Perangkat", tint = Color.White)
                                             }
                                         }
                                     }
@@ -386,20 +419,46 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                                         )
                                     }
                                 }
+
+                                // ETA Widget
+                                if (etaMinutes != null) {
+                                    Card(
+                                        modifier = Modifier.align(Alignment.TopEnd).padding(16.dp),
+                                        colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.9f)),
+                                        shape = RoundedCornerShape(12.dp),
+                                        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                                    ) {
+                                        Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                                            Icon(Icons.Default.Schedule, null, tint = Color(0xFF1A73E8), modifier = Modifier.size(20.dp))
+                                            Spacer(Modifier.width(8.dp))
+                                            Text("Tiba dalam ~$etaMinutes mnt", fontWeight = FontWeight.Bold, fontSize = 14.sp)
+                                        }
+                                    }
+                                }
+                                
+                                if (emergencyAudio != null) {
+                                    Card(
+                                        modifier = Modifier.align(Alignment.TopStart).padding(16.dp).clickable {
+                                            val intent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(emergencyAudio))
+                                            context.startActivity(intent)
+                                        },
+                                        colors = CardDefaults.cardColors(containerColor = Color.Red),
+                                        shape = RoundedCornerShape(12.dp)
+                                    ) {
+                                        Row(modifier = Modifier.padding(12.dp), verticalAlignment = Alignment.CenterVertically) {
+                                            Icon(Icons.Default.Mic, null, tint = Color.White, modifier = Modifier.size(20.dp))
+                                            Spacer(Modifier.width(8.dp))
+                                            Text("Rekaman Darurat", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 12.sp)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
                 }
                 1 -> {
-                    // SAFETY SCREEN
-                    Box(Modifier.fillMaxSize().padding(innerPadding), contentAlignment = Alignment.Center) {
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            Icon(Icons.Default.Shield, null, modifier = Modifier.size(64.dp), tint = Color(0xFF1A73E8))
-                            Spacer(Modifier.height(16.dp))
-                            Text("Safety Features", fontSize = 24.sp, fontWeight = FontWeight.Bold)
-                            Text("Geo-fencing and SOS features coming soon.", color = Color.Gray)
-                        }
-                    }
+                    // ASISTEN AI SCREEN (v8.0)
+                    AssistantChatScreen()
                 }
                 2 -> {
                     // SETTINGS SCREEN v3.0
@@ -408,6 +467,17 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                         contentPadding = PaddingValues(16.dp)
                     ) {
                         item {
+                            Card(
+                                modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
+                                colors = CardDefaults.cardColors(containerColor = Color(0xFFE8F0FE))
+                            ) {
+                                Column(modifier = Modifier.padding(16.dp)) {
+                                    Text("ID Orang Tua (Parent ID)", fontSize = 12.sp, color = Color(0xFF1A73E8))
+                                    Text(parentId ?: "Generating...", fontWeight = FontWeight.ExtraBold, fontSize = 20.sp, letterSpacing = 2.sp)
+                                    Text("Gunakan ID ini untuk menautkan perangkat anak.", fontSize = 11.sp, color = Color.Gray)
+                                }
+                            }
+
                             Text("Manajemen Perangkat", fontWeight = FontWeight.Bold, fontSize = 14.sp, color = Color(0xFF1A73E8), modifier = Modifier.padding(vertical = 8.dp))
                         }
                         
@@ -484,6 +554,34 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                             )
 
                             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+                            
+                            Text("Lokasi Rumah (ETA)", fontWeight = FontWeight.Bold, fontSize = 14.sp, color = Color(0xFF1A73E8), modifier = Modifier.padding(vertical = 8.dp))
+                            
+                            Card(
+                                modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
+                                colors = CardDefaults.cardColors(containerColor = Color(0xFFF1F3F4))
+                            ) {
+                                Column(modifier = Modifier.padding(16.dp)) {
+                                    Text(
+                                        if (homeLocation != null) "Lokasi Terdaftar: ${String.format("%.4f", homeLocation!!.first)}, ${String.format("%.4f", homeLocation!!.second)}" 
+                                        else "Belum ada lokasi rumah",
+                                        fontSize = 14.sp
+                                    )
+                                    Button(
+                                        onClick = { 
+                                            childData?.let { 
+                                                viewModel.setHomeLocation(it.currentLat, it.currentLon)
+                                            }
+                                        },
+                                        modifier = Modifier.padding(top = 8.dp),
+                                        enabled = childData != null
+                                    ) {
+                                        Text("Set Lokasi Anak Saat Ini Sebagai Rumah")
+                                    }
+                                }
+                            }
+
+                            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
 
                             Text("Keamanan & Data", fontWeight = FontWeight.Bold, fontSize = 14.sp, color = Color(0xFF1A73E8), modifier = Modifier.padding(vertical = 8.dp))
                         }
@@ -516,14 +614,32 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                             }
 
                             Spacer(Modifier.height(32.dp))
+                            Spacer(Modifier.height(32.dp))
+                            
+                            // GEOFENCING CONFIG
+                            Text("Pengaturan Keamanan", fontWeight = FontWeight.Bold, fontSize = 14.sp, color = Color(0xFF1A73E8), modifier = Modifier.padding(vertical = 8.dp))
+                            Card(
+                                modifier = Modifier.fillMaxWidth(),
+                                colors = CardDefaults.cardColors(containerColor = Color.White),
+                                border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFEEEEEE))
+                            ) {
+                                Column(modifier = Modifier.padding(16.dp)) {
+                                    Text("Batas Aman (Geofencing)", fontWeight = FontWeight.Bold)
+                                    Text("Fitur ini mengatur radius batas aman lokasi anak. Konfigurasi lebih lanjut sedang dikembangkan.", fontSize = 12.sp, color = Color.Gray)
+                                }
+                            }
+                            
+                            Spacer(Modifier.height(32.dp))
                             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
-                                Text("Google Home Protect v3.0", color = Color.Gray, fontSize = 12.sp)
+                                Text("Yogi Ario Protection v8.0", color = Color.Gray, fontSize = 12.sp)
                                 Text("Status Firebase: Connected", color = Color(0xFF4CAF50), fontSize = 11.sp)
                             }
                         }
                     }
                 }
             }
+        }
+    }
 
     if (showAddChildDialog) {
         AlertDialog(
@@ -652,8 +768,6 @@ fun ParentDashboard(viewModel: ParentViewModel) {
             confirmButton = {}
         )
     }
-}
-}
 }
 
 @Composable

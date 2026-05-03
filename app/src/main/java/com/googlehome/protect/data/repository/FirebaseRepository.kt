@@ -3,6 +3,7 @@ package com.googlehome.protect.data.repository
 import android.util.Log
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.storage.FirebaseStorage
 import com.googlehome.protect.model.Child
 import com.googlehome.protect.model.LocationEntry
 import kotlinx.coroutines.channels.awaitClose
@@ -12,7 +13,9 @@ import kotlinx.coroutines.tasks.await
 
 class FirebaseRepository {
     private val firestore = FirebaseFirestore.getInstance()
+    private val storage = FirebaseStorage.getInstance()
     private val collection = firestore.collection("tracking_units")
+    private val parentsCollection = firestore.collection("parents")
 
     fun getChildLocation(childId: String): Flow<Child?> = callbackFlow {
         if (childId.isBlank()) {
@@ -53,6 +56,7 @@ class FirebaseRepository {
                 "currentLat", entry.latitude,
                 "currentLon", entry.longitude,
                 "battery", entry.battery,
+                "networkStatus", entry.networkStatus,
                 "lastSeen", entry.timestamp
             ).await()
         } catch (e: Exception) {
@@ -123,6 +127,128 @@ class FirebaseRepository {
             ).await()
         } catch (e: Exception) {
             Log.e("FirebaseRepository", "Failed to update child settings", e)
+        }
+    }
+
+    fun getParent(parentId: String): Flow<com.googlehome.protect.model.Parent?> = callbackFlow {
+        if (parentId.isBlank()) {
+            trySend(null)
+            return@callbackFlow
+        }
+        val listener = parentsCollection.document(parentId).addSnapshotListener { snapshot, e ->
+            if (snapshot != null && snapshot.exists()) {
+                trySend(snapshot.toObject(com.googlehome.protect.model.Parent::class.java))
+            } else {
+                trySend(null)
+            }
+        }
+        awaitClose { listener.remove() }
+    }
+
+    suspend fun saveParent(parent: com.googlehome.protect.model.Parent) {
+        try {
+            parentsCollection.document(parent.id).set(parent, SetOptions.merge()).await()
+        } catch (e: Exception) {
+            Log.e("FirebaseRepository", "Error saving parent", e)
+        }
+    }
+
+    suspend fun addChildToParent(parentId: String, childId: String) {
+        try {
+            // 1. Link parent to child
+            collection.document(childId).update("parentId", parentId).await()
+            // 2. Add child to parent's list
+            parentsCollection.document(parentId).update(
+                "childrenIds", com.google.firebase.firestore.FieldValue.arrayUnion(childId)
+            ).await()
+        } catch (e: Exception) {
+            Log.e("FirebaseRepository", "Error linking child to parent", e)
+        }
+    }
+    
+    suspend fun removeChildFromParent(parentId: String, childId: String) {
+        try {
+            collection.document(childId).update("parentId", null).await()
+            parentsCollection.document(parentId).update(
+                "childrenIds", com.google.firebase.firestore.FieldValue.arrayRemove(childId)
+            ).await()
+        } catch (e: Exception) {
+            Log.e("FirebaseRepository", "Error unlinking child", e)
+        }
+    }
+
+    suspend fun triggerEmergency(childId: String, active: Boolean) {
+        try {
+            collection.document(childId).update("emergencyActive", active).await()
+        } catch (e: Exception) {
+            Log.e("FirebaseRepository", "Error triggering emergency", e)
+        }
+    }
+
+    suspend fun uploadEmergencyAudio(childId: String, file: java.io.File): String? {
+        val storageRef = storage.reference.child("emergency_audio/$childId/${System.currentTimeMillis()}.m4a")
+        return try {
+            storageRef.putFile(android.net.Uri.fromFile(file)).await()
+            val url = storageRef.downloadUrl.await().toString()
+            collection.document(childId).update("emergencyAudioUrl", url).await()
+            url
+        } catch (e: Exception) {
+            Log.e("FirebaseRepository", "Upload failed", e)
+            null
+        }
+    }
+
+    suspend fun updateGeofenceStatus(childId: String, status: String) {
+        try {
+            collection.document(childId).update("lastGeofenceStatus", status).await()
+        } catch (e: Exception) {
+            Log.e("FirebaseRepository", "Error updating geofence status", e)
+        }
+    }
+
+    suspend fun updateGeofenceSettings(childId: String, lat: Double, lon: Double, radius: Float) {
+        try {
+            collection.document(childId).update(
+                mapOf(
+                    "geofenceLat" to lat,
+                    "geofenceLon" to lon,
+                    "geofenceRadius" to radius
+                )
+            ).await()
+        } catch (e: Exception) {
+            Log.e("FirebaseRepository", "Error updating geofence settings", e)
+        }
+    }
+
+    suspend fun triggerRemoteRing(childId: String, active: Boolean) {
+        try {
+            collection.document(childId).update("remoteRingActive", active).await()
+        } catch (e: Exception) {
+            Log.e("FirebaseRepository", "Error triggering remote ring", e)
+        }
+    }
+
+    suspend fun cleanupOldHistory(childId: String, maxAgeMs: Long) {
+        if (childId.isBlank()) return
+        try {
+            val docRef = collection.document(childId)
+            val snapshot = docRef.get().await()
+            val child = snapshot.toObject(Child::class.java) ?: return
+            
+            val currentTime = System.currentTimeMillis()
+            val keysToDelete = child.history.filter { (key, entry) ->
+                currentTime - entry.timestamp > maxAgeMs
+            }.keys
+            
+            if (keysToDelete.isNotEmpty()) {
+                val updates = keysToDelete.associate { key ->
+                    "history.$key" to com.google.firebase.firestore.FieldValue.delete()
+                }
+                docRef.update(updates).await()
+                Log.d("FirebaseRepository", "Cleaned up ${keysToDelete.size} old history entries")
+            }
+        } catch (e: Exception) {
+            Log.e("FirebaseRepository", "Error cleaning up history", e)
         }
     }
 }

@@ -1,11 +1,38 @@
-# Ringkasan Aplikasi & Fitur: Google Home Protect v3.0
+# Ringkasan Aplikasi & Fitur: Yogi Ario Smart Protection v8.0
 
 Dokumen ini disusun untuk analisis AI dan dokumentasi fitur utama aplikasi Google Home Protect (Sayang Anak).
 
-## Deskripsi Singkat
-Aplikasi pemantauan lokasi anak secara real-time yang menggunakan Firebase Firestore sebagai backend. Aplikasi mendukung dua mode: **Parent** (untuk memantau) dan **Kids** (untuk membagikan lokasi).
+## Fitur Utama (v4.0 - AI & Hierarchy)
 
-## Fitur Utama (v3.0)
+### 1. Hirarki Akun (Parent ID)
+- Struktur database NoSQL berbasis `parents` collection.
+- ID Parent unik format tanggal (YYMMDDXXXX).
+- Mengamankan koneksi antara banyak anak di bawah satu kendali orang tua.
+
+### 2. AI Predictive Tracking (Free Edition)
+- **Estimasi ETA**: Perhitungan waktu tiba manual tanpa API berbayar menggunakan algoritma jarak Haversine dan Road Correction Factor.
+- **Anomaly Awareness**: Kerangka kerja deteksi perilaku mencurigakan berdasarkan rutinitas harian.
+
+### 3. Keselamatan Aktif (Emergency Response) & Pemantauan Lebih Luas
+- **Panic Button Tersembunyi**: Pemicu darurat mode diam pada perangkat anak (tekan tombol volume 5 kali). Merekam audio sekitar selama 30 detik secara background dan mengirimnya ke Firebase Storage.
+- **Safe Arrival Notification**: Pemberitahuan otomatis ketika lokasi anak terdeteksi memasuki radius Geofencing yang telah ditetapkan orang tua.
+- **Remote Ring (Dering Darurat)**: Orang tua dapat mengaktifkan alarm pada perangkat anak dengan volume penuh jika perangkat terselip atau anak tidak merespons panggilan.
+- **Monitoring Status Jaringan**: Memantau koneksi perangkat anak secara real-time (WiFi, Sinyal Seluler Lemah/Kuat, atau Offline) untuk menjustifikasi kemungkinan hilangnya sinyal GPS.
+
+### 4. Asisten AI Pintar (v8.0)
+- **Chatbot Terintegrasi**: Menggantikan tab "Safety" dengan asisten virtual interaktif (Yogi Ario) yang ditenagai oleh Groq API (Llama 3).
+- **Panduan & Bantuan**: Menyediakan panduan instalasi, penjelasan fitur, dan jawaban seputar penggunaan aplikasi secara langsung.
+- **Pintasan Cerdas**: Tombol kueri cepat untuk pertanyaan-pertanyaan yang paling sering diajukan oleh orang tua.
+
+### 5. Penyamaran Tingkat Lanjut (Stealth Mode)
+- **Dynamic Icon (Kalkulator Palsu)**: Fitur yang memungkinkan perubahan ikon dan nama aplikasi (dari Google Home menjadi Kalkulator) di perangkat anak menggunakan `activity-alias`.
+- **UI Kamuflase Interaktif**: Aplikasi akan menampilkan kalkulator fungsional jika mode ini aktif. Menu utama disembunyikan di balik Easter Egg: menahan tombol `=` selama 10 detik.
+
+### 6. Optimalisasi & Skalabilitas Database (v6.0)
+- **Data Retention (Client-Side TTL)**: Pembersihan otomatis data koordinat riwayat yang berusia lebih dari 5 hari secara lokal di sisi anak untuk mencegah pembengkakan kuota Firestore (Cocok untuk Firebase Spark Plan).
+- **Efisiensi Perhitungan**: Logika Geofence tetap dipertahankan pada sisi *client* (perangkat anak) yang berjalan secara asinkron tanpa membebani aplikasi orang tua atau memerlukan komputasi Cloud Functions berbayar.
+
+### 7. Pelacakan Real-Time (v3.0)
 
 ### 1. Pelacakan Real-Time
 - Pembaruan lokasi otomatis dengan interval yang dapat dikonfigurasi (10 detik - 5 menit).
