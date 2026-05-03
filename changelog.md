@@ -11,6 +11,10 @@ All notable changes to this project will be documented in this file.
 - **Enhanced Polyline UI/UX**: Improved the route history drawing by changing the line color to bright red, increasing thickness, and adding a green start marker.
 - **Performance Optimization**: Limited the polyline drawing to the last 100 location points to prevent rendering lag on extended usage.
 
+### Fixed
+- **Permission Denied Crash**: Fixed a fatal crash in the Parent Dashboard occurring when Firestore Security Rules block read access.
+- **Anonymous Authentication**: Integrated `FirebaseAuth.signInAnonymously()` seamlessly on app startup to satisfy secure Firestore Rules without requiring explicit user login.
+
 ## [1.1.0] - 2026-05-03
 
 ### Added
