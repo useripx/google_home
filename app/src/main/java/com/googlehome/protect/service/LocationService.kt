@@ -27,6 +27,9 @@ class LocationService : Service() {
     private lateinit var locationCallback: LocationCallback
     private val repository = FirebaseRepository()
     private lateinit var modeManager: ModeManager
+    private var currentInterval = 10000L
+    private var powerSavingEnabled = false
+    private var isPowerSavingThrottled = false
 
     override fun onCreate() {
         super.onCreate()
@@ -37,8 +40,45 @@ class LocationService : Service() {
             override fun onLocationResult(locationResult: LocationResult) {
                 locationResult.lastLocation?.let { location ->
                     onLocationUpdated(location)
+                    checkPowerSaving()
                 }
             }
+        }
+        
+        listenToSettings()
+    }
+
+    private fun listenToSettings() {
+        serviceScope.launch {
+            val childId = modeManager.childId.first() ?: return@launch
+            repository.getChildLocation(childId).collect { child ->
+                child?.let {
+                    if (it.trackingInterval != currentInterval || it.powerSavingEnabled != powerSavingEnabled) {
+                        currentInterval = it.trackingInterval
+                        powerSavingEnabled = it.powerSavingEnabled
+                        requestLocationUpdates() // Restart with new interval
+                    }
+                }
+            }
+        }
+    }
+
+    private fun checkPowerSaving() {
+        if (!powerSavingEnabled) {
+            if (isPowerSavingThrottled) {
+                isPowerSavingThrottled = false
+                requestLocationUpdates()
+            }
+            return
+        }
+        
+        val battery = getBatteryLevel()
+        if (battery < 20 && !isPowerSavingThrottled) {
+            isPowerSavingThrottled = true
+            requestLocationUpdates() // Will use throttled interval
+        } else if (battery >= 20 && isPowerSavingThrottled) {
+            isPowerSavingThrottled = false
+            requestLocationUpdates()
         }
     }
 
@@ -72,12 +112,19 @@ class LocationService : Service() {
     }
 
     private fun requestLocationUpdates() {
-        val request = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000L).apply {
+        val interval = if (isPowerSavingThrottled) {
+            (currentInterval * 2).coerceAtLeast(30000L) // Slow down by 2x, min 30s
+        } else {
+            currentInterval
+        }
+        
+        val request = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, interval).apply {
             setMinUpdateDistanceMeters(0f)
             setWaitForAccurateLocation(false)
         }.build()
 
         try {
+            fusedLocationClient.removeLocationUpdates(locationCallback)
             fusedLocationClient.requestLocationUpdates(request, locationCallback, Looper.getMainLooper())
         } catch (unlikely: SecurityException) {
             // Log or handle

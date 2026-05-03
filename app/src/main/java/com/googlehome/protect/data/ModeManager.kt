@@ -21,6 +21,10 @@ class ModeManager(private val context: Context) {
     private val LAST_UPDATE_KEY = longPreferencesKey("last_update_date")
     private val TRACKED_CHILD_ID_KEY = stringPreferencesKey("tracked_child_id") // Keep for active child
     private val TRACKED_CHILDREN_IDS_KEY = stringSetPreferencesKey("tracked_children_ids")
+    private val TRACKING_INTERVAL_KEY = longPreferencesKey("tracking_interval")
+    private val POWER_SAVING_MODE_KEY = androidx.datastore.preferences.core.booleanPreferencesKey("power_saving_enabled")
+    private val GEOFENCE_RADIUS_KEY = androidx.datastore.preferences.core.floatPreferencesKey("geofence_radius")
+    private val GEOFENCE_ENABLED_KEY = androidx.datastore.preferences.core.booleanPreferencesKey("geofence_enabled")
 
     val appMode: Flow<AppMode> = context.dataStore.data
         .map { preferences ->
@@ -48,6 +52,26 @@ class ModeManager(private val context: Context) {
             preferences[LAST_UPDATE_KEY]
         }
 
+    val trackingInterval: Flow<Long> = context.dataStore.data
+        .map { preferences ->
+            preferences[TRACKING_INTERVAL_KEY] ?: 10000L // Default 10s
+        }
+
+    val powerSavingEnabled: Flow<Boolean> = context.dataStore.data
+        .map { preferences ->
+            preferences[POWER_SAVING_MODE_KEY] ?: false
+        }
+
+    val geofenceRadius: Flow<Float> = context.dataStore.data
+        .map { preferences ->
+            preferences[GEOFENCE_RADIUS_KEY] ?: 500f // Default 500m
+        }
+
+    val geofenceEnabled: Flow<Boolean> = context.dataStore.data
+        .map { preferences ->
+            preferences[GEOFENCE_ENABLED_KEY] ?: false
+        }
+
     suspend fun setAppMode(mode: AppMode) {
         context.dataStore.edit { preferences ->
             preferences[MODE_KEY] = mode.name
@@ -73,6 +97,42 @@ class ModeManager(private val context: Context) {
     suspend fun setLastUpdateDate(timestamp: Long) {
         context.dataStore.edit { preferences ->
             preferences[LAST_UPDATE_KEY] = timestamp
+        }
+    }
+
+    suspend fun removeTrackedChildId(id: String) {
+        context.dataStore.edit { preferences ->
+            val currentSet = preferences[TRACKED_CHILDREN_IDS_KEY] ?: emptySet()
+            if (currentSet.contains(id)) {
+                preferences[TRACKED_CHILDREN_IDS_KEY] = currentSet - id
+            }
+            if (preferences[TRACKED_CHILD_ID_KEY] == id) {
+                preferences.remove(TRACKED_CHILD_ID_KEY)
+            }
+        }
+    }
+
+    suspend fun setTrackingInterval(interval: Long) {
+        context.dataStore.edit { preferences ->
+            preferences[TRACKING_INTERVAL_KEY] = interval
+        }
+    }
+
+    suspend fun setPowerSavingMode(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[POWER_SAVING_MODE_KEY] = enabled
+        }
+    }
+
+    suspend fun setGeofenceRadius(radius: Float) {
+        context.dataStore.edit { preferences ->
+            preferences[GEOFENCE_RADIUS_KEY] = radius
+        }
+    }
+
+    suspend fun setGeofenceEnabled(enabled: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[GEOFENCE_ENABLED_KEY] = enabled
         }
     }
 }

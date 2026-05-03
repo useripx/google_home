@@ -104,4 +104,25 @@ class FirebaseRepository {
             Log.e("FirebaseRepository", "Failed to initialize child", e)
         }
     }
+
+    suspend fun clearChildHistory(childId: String) {
+        if (childId.isBlank()) return
+        try {
+            collection.document(childId).update("history", com.google.firebase.firestore.FieldValue.delete()).await()
+        } catch (e: Exception) {
+            Log.e("FirebaseRepository", "Failed to clear child history", e)
+        }
+    }
+
+    suspend fun updateSettings(childId: String, interval: Long, powerSaving: Boolean) {
+        if (childId.isBlank()) return
+        try {
+            collection.document(childId).update(
+                "trackingInterval", interval,
+                "powerSavingEnabled", powerSaving
+            ).await()
+        } catch (e: Exception) {
+            Log.e("FirebaseRepository", "Failed to update child settings", e)
+        }
+    }
 }

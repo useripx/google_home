@@ -19,7 +19,9 @@ data class Child(
     val lastSeen: Long = 0L,
     val currentLat: Double = 0.0,
     val currentLon: Double = 0.0,
-    val history: Map<String, LocationEntry> = emptyMap()
+    val history: Map<String, LocationEntry> = emptyMap(),
+    val trackingInterval: Long = 10000L,
+    val powerSavingEnabled: Boolean = false
 )
 
 enum class AppMode {
