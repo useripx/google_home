@@ -23,7 +23,7 @@ class FirebaseRepository {
         val registration = docRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
                 Log.e("FirebaseRepository", "Error listening to location", e)
-                close(e)
+                trySend(null)
                 return@addSnapshotListener
             }
             if (snapshot != null && snapshot.exists()) {

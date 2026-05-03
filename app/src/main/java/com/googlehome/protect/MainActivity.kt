@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat
 import com.googlehome.protect.data.ModeManager
 import com.googlehome.protect.data.repository.FirebaseRepository
 import com.googlehome.protect.model.AppMode
+import com.google.firebase.auth.FirebaseAuth
 import com.googlehome.protect.service.LocationService
 import com.googlehome.protect.ui.MainViewModel
 import com.googlehome.protect.ui.kids.KidsDisguiseScreen
@@ -37,6 +38,14 @@ class MainActivity : ComponentActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Initialize Firebase Anonymous Authentication to satisfy secure Firestore Rules
+        val auth = FirebaseAuth.getInstance()
+        if (auth.currentUser == null) {
+            auth.signInAnonymously().addOnFailureListener { e ->
+                e.printStackTrace()
+            }
+        }
         
         modeManager = ModeManager(this)
         mainViewModel = MainViewModel(modeManager)
