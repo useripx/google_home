@@ -54,7 +54,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
         drawerContent = {
             ModalDrawerSheet {
                 Text("Google Home Protect", modifier = Modifier.padding(16.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold)
-                Divider()
+                HorizontalDivider()
                 NavigationDrawerItem(
                     label = { Text("Profile") },
                     selected = false,
