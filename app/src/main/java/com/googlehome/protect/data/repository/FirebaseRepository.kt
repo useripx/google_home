@@ -63,6 +63,15 @@ class FirebaseRepository {
         }
     }
 
+    suspend fun updateChildName(childId: String, name: String) {
+        if (childId.isBlank() || name.isBlank()) return
+        try {
+            collection.document(childId).update("name", name).await()
+        } catch (e: Exception) {
+            Log.e("FirebaseRepository", "Failed to update child name", e)
+        }
+    }
+
     suspend fun initializeChild(childId: String) {
         if (childId.isBlank()) return
         try {

@@ -39,6 +39,9 @@ fun ParentDashboard(viewModel: ParentViewModel) {
     
     var showAddChildDialog by remember { mutableStateOf(false) }
     var inputId by remember { mutableStateOf("") }
+
+    var showRenameDialog by remember { mutableStateOf(false) }
+    var inputName by remember { mutableStateOf("") }
     
     var selectedTab by remember { mutableIntStateOf(0) }
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
@@ -209,7 +212,18 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                                             }
                                             Spacer(modifier = Modifier.width(16.dp))
                                             Column {
-                                                Text(child.name.ifEmpty { "Child Device" }, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                                    Text(child.name.ifEmpty { "Child Device" }, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                                                    IconButton(
+                                                        onClick = {
+                                                            inputName = child.name
+                                                            showRenameDialog = true
+                                                        },
+                                                        modifier = Modifier.size(28.dp).padding(start = 4.dp)
+                                                    ) {
+                                                        Icon(Icons.Default.Edit, contentDescription = "Edit Name", modifier = Modifier.size(16.dp), tint = Color.Gray)
+                                                    }
+                                                }
                                                 Row(verticalAlignment = Alignment.CenterVertically) {
                                                     Icon(Icons.Default.BatteryChargingFull, null, modifier = Modifier.size(14.dp), tint = Color(0xFF006E2C))
                                                     Spacer(modifier = Modifier.width(4.dp))
@@ -339,10 +353,47 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                     if (inputId.isNotBlank()) {
                         viewModel.startTracking(inputId)
                         showAddChildDialog = false
-                        inputId = ""
+                        showRenameDialog = true
+                        inputName = ""
+                        // Don't clear inputId yet so we know who we just added if needed
                     }
                 }) {
                     Text("CONNECT")
+                }
+            }
+        )
+    }
+
+    if (showRenameDialog) {
+        AlertDialog(
+            onDismissRequest = { showRenameDialog = false },
+            title = { Text("Set Child Name") },
+            text = {
+                OutlinedTextField(
+                    value = inputName,
+                    onValueChange = { inputName = it },
+                    label = { Text("Enter Child Name") },
+                    placeholder = { Text("e.g. John's Phone") },
+                    modifier = Modifier.fillMaxWidth()
+                )
+            },
+            confirmButton = {
+                Button(onClick = {
+                    if (inputName.isNotBlank() && trackingId != null) {
+                        viewModel.updateChildName(trackingId!!, inputName)
+                    }
+                    showRenameDialog = false
+                    inputId = "" // clear it now
+                }) {
+                    Text("SAVE")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { 
+                    showRenameDialog = false
+                    inputId = ""
+                }) {
+                    Text("SKIP")
                 }
             }
         )

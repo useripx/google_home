@@ -45,4 +45,10 @@ class ParentViewModel(private val repository: FirebaseRepository, private val mo
             }
         }
     }
+
+    fun updateChildName(childId: String, name: String) {
+        viewModelScope.launch {
+            repository.updateChildName(childId, name)
+        }
+    }
 }
