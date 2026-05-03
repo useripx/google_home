@@ -289,14 +289,22 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                                     // Polyline for tracking history
                                     val historyPoints = child.history.values.toList()
                                         .sortedBy { it.timestamp }
+                                        .takeLast(100) // Ambil 100 titik terakhir agar tidak lag
                                         .map { LatLng(it.latitude, it.longitude) }
                                     
                                     if (historyPoints.size > 1) {
                                         Polyline(
                                             points = historyPoints,
-                                            color = Color(0xFF1A73E8),
-                                            width = 12f,
-                                            geodesic = true
+                                            color = Color(0xFFFF3B30), // Warna merah agar sangat jelas
+                                            width = 15f,
+                                            geodesic = true,
+                                            zIndex = 1f
+                                        )
+                                        // Marker untuk titik awal rute
+                                        Marker(
+                                            state = MarkerState(position = historyPoints.first()),
+                                            title = "Titik Awal",
+                                            icon = com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_GREEN)
                                         )
                                     }
                                 }
