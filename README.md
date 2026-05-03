@@ -13,8 +13,8 @@
 - **Multiple Children & Quick Switch**: Manage multiple child profiles and switch between them instantly using UI chips.
 - **Child Renaming**: Assign custom names to devices for easy identification.
 - **Interactive Fullscreen Maps**: View current location on an integrated, fullscreen Google Maps view using a Bottom Sheet for details.
-- **Polyline Route Tracking**: Visual route drawing on the map to display the child's movement history.
-- **Direct Navigation**: One-click button to open Google Maps for directions to the child's location.
+- **Enhanced Polyline Route Tracking**: Visual, high-contrast route drawing on the map with a start marker to accurately trace the child's movement history.
+- **Direct Navigation**: One-click shortcut button to open Google Maps and generate directions directly to the child's exact location.
 - **Alive Trigger**: Send a notification trigger to ensure the Child app is active in the background.
 - **History Log**: Review daily location history stored locally.
 

@@ -13,6 +13,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
@@ -178,6 +179,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                             cameraPositionState.animate(CameraUpdateFactory.newLatLng(currentLocation))
                         }
                         
+                        val context = LocalContext.current
                         val bottomSheetState = rememberStandardBottomSheetState(
                             initialValue = SheetValue.PartiallyExpanded
                         )
@@ -230,6 +232,23 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                                                     Text("${child.battery}% • Connected", fontSize = 12.sp, color = Color.Gray)
                                                 }
                                             }
+                                            Spacer(modifier = Modifier.weight(1f))
+                                            IconButton(
+                                                onClick = {
+                                                    val uri = "google.navigation:q=${child.currentLat},${child.currentLon}"
+                                                    val mapIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse(uri))
+                                                    mapIntent.setPackage("com.google.android.apps.maps")
+                                                    try {
+                                                        context.startActivity(mapIntent)
+                                                    } catch (e: Exception) {
+                                                        val browserIntent = android.content.Intent(android.content.Intent.ACTION_VIEW, android.net.Uri.parse("https://maps.google.com/?q=${child.currentLat},${child.currentLon}"))
+                                                        context.startActivity(browserIntent)
+                                                    }
+                                                },
+                                                modifier = Modifier.background(Color(0xFF1A73E8), CircleShape)
+                                            ) {
+                                                Icon(Icons.Default.Navigation, contentDescription = "Navigate", tint = Color.White)
+                                            }
                                         }
                                     }
 
@@ -270,14 +289,22 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                                     // Polyline for tracking history
                                     val historyPoints = child.history.values.toList()
                                         .sortedBy { it.timestamp }
+                                        .takeLast(100) // Ambil 100 titik terakhir agar tidak lag
                                         .map { LatLng(it.latitude, it.longitude) }
                                     
                                     if (historyPoints.size > 1) {
                                         Polyline(
                                             points = historyPoints,
-                                            color = Color(0xFF1A73E8),
-                                            width = 12f,
-                                            geodesic = true
+                                            color = Color(0xFFFF3B30), // Warna merah agar sangat jelas
+                                            width = 15f,
+                                            geodesic = true,
+                                            zIndex = 1f
+                                        )
+                                        // Marker untuk titik awal rute
+                                        Marker(
+                                            state = MarkerState(position = historyPoints.first()),
+                                            title = "Titik Awal",
+                                            icon = com.google.android.gms.maps.model.BitmapDescriptorFactory.defaultMarker(com.google.android.gms.maps.model.BitmapDescriptorFactory.HUE_GREEN)
                                         )
                                     }
                                 }
