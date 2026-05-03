@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#eeb200",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#d6e4f3",
+                    "tertiary-fixed": "#febf0d",
+                    "surface-tint": "#005ac1",
+                    "tertiary": "#7a5a00",
+                    "surface-container-high": "#dee9f6",
+                    "surface-container-highest": "#d6e4f3",
+                    "secondary-fixed-dim": "#7bec8e",
+                    "error": "#9f403d",
+                    "primary-fixed": "#d8e2ff",
+                    "surface-container": "#e7eff9",
+                    "tertiary-container": "#febf0d",
+                    "surface": "#f7f9ff",
+                    "error-container": "#fe8983",
+                    "primary-container": "#d8e2ff",
+                    "secondary-container": "#89fa9b",
+                    "tertiary-dim": "#6b4e00",
+                    "on-primary-fixed": "#003d86",
+                    "on-surface": "#27343f",
+                    "secondary-fixed": "#89fa9b",
+                    "inverse-on-surface": "#999da3",
+                    "outline-variant": "#a6b3c2",
+                    "error-dim": "#4e0309",
+                    "on-primary-container": "#004ea9",
+                    "outline": "#6f7c89",
+                    "on-error-container": "#752121",
+                    "primary-dim": "#004faa",
+                    "on-error": "#fff7f6",
+                    "primary-fixed-dim": "#c3d4ff",
+                    "on-tertiary-fixed-variant": "#614700",
+                    "secondary": "#006e2d",
+                    "inverse-primary": "#4d8efe",
+                    "surface-bright": "#f7f9ff",
+                    "on-tertiary-fixed": "#3d2b00",
+                    "on-tertiary": "#fff8f1",
+                    "on-tertiary-container": "#563e00",
+                    "primary": "#005ac1",
+                    "on-primary-fixed-variant": "#0058bc",
+                    "on-background": "#27343f",
+                    "on-secondary-fixed": "#004a1c",
+                    "inverse-surface": "#0a0f13",
+                    "on-surface-variant": "#53606d",
+                    "surface-dim": "#cbdced",
+                    "secondary-dim": "#006126",
+                    "on-primary": "#f7f7ff",
+                    "on-secondary-fixed-variant": "#006a2b",
+                    "on-secondary-container": "#005f25",
+                    "surface-container-low": "#eff4fc",
+                    "on-secondary": "#e9ffe6",
+                    "background": "#f7f9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "1.5rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-header {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-background min-h-screen flex flex-col">
+<header class="bg-white/70 backdrop-blur-xl shadow-sm flex justify-between items-center px-6 py-4 w-full sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-blue-700" data-icon="security">security</span>
+<h1 class="text-xl font-black text-blue-700 tracking-tight">Sayang Anak</h1>
+</div>
+<div class="hidden md:flex gap-6">
+<span class="text-sm font-medium text-slate-500">Support</span>
+<span class="text-sm font-medium text-slate-500">Privacy</span>
+</div>
+</header>
+<main class="flex-grow flex flex-col items-center justify-center px-6 py-12 max-w-5xl mx-auto w-full">
+<div class="text-center mb-16">
+<h2 class="text-4xl md:text-5xl font-extrabold text-on-surface tracking-tight mb-4">Welcome to Google Home</h2>
+<p class="text-lg text-on-surface-variant max-w-xl mx-auto font-medium">Install as what mode?</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+<button class="group relative flex flex-col text-left p-8 rounded-xl bg-surface-container-low transition-all duration-300 hover:bg-surface-container-highest active:scale-[0.98]">
+<div class="w-16 h-16 rounded-full bg-primary-container flex items-center justify-center mb-8 transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined text-on-primary-container text-3xl" data-icon="security">security</span>
+</div>
+<h3 class="text-2xl font-bold text-on-surface mb-3">Parent Mode</h3>
+<p class="text-on-surface-variant leading-relaxed mb-8">Monitor and track your family devices</p>
+<div class="mt-auto flex items-center text-primary font-bold tracking-tight">
+<span>Get Started</span>
+<span class="material-symbols-outlined ml-2 text-sm">arrow_forward</span>
+</div>
+<div class="absolute top-6 right-6 opacity-0 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-6xl" data-icon="security">security</span>
+</div>
+</button>
+<button class="group relative flex flex-col text-left p-8 rounded-xl bg-surface-container-low transition-all duration-300 hover:bg-surface-container-highest active:scale-[0.98]">
+<div class="w-16 h-16 rounded-full bg-secondary-container flex items-center justify-center mb-8 transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined text-on-secondary-container text-3xl" data-icon="devices">devices</span>
+</div>
+<h3 class="text-2xl font-bold text-on-surface mb-3">Kids Mode</h3>
+<p class="text-on-surface-variant leading-relaxed mb-8">Connect this device to a parent account</p>
+<div class="mt-auto flex items-center text-secondary font-bold tracking-tight">
+<span>Setup Device</span>
+<span class="material-symbols-outlined ml-2 text-sm">arrow_forward</span>
+</div>
+<div class="absolute top-6 right-6 opacity-0 group-hover:opacity-10 transition-opacity">
+<span class="material-symbols-outlined text-6xl" data-icon="devices">devices</span>
+</div>
+</button>
+</div>
+<div class="mt-20 w-full rounded-xl overflow-hidden relative aspect-[21/9] hidden md:block">
+<img alt="Safe connection" class="w-full h-full object-cover" data-alt="Modern minimalist home interior with soft natural lighting and a digital tablet on a wooden table representing family safety" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCU0i-5ulFmSsjRC4-feKG8vIWIqdkodk7SjirU2z2zvWL9xFjSv7n9s31JMuFnzSGTk1DIjtx8o0Jq2chcHi1ajfWePs6nRcOr8lXuT2BJwnUAlwfir2w-R9qho0IsH6SBCsyyi-5tKfycgOyvRJ-ZYDXi2pXN7P2jgMNNW8XSjHPWFM0GfMbOu7xpoajUkhvKxWqJhXCTA7jclcKkvdPk2EUqMUl5kg_mH7-gprfXVJHHKx5HE841j9eDvui3_KJ6iI9X-zOQG1M"/>
+<div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/40 to-transparent flex items-center px-12">
+<div class="max-w-xs">
+<h4 class="text-on-surface font-bold text-lg mb-2">Safe by Design</h4>
+<p class="text-on-surface-variant text-sm">Encrypted communication ensures your family data stays private and secure at all times.</p>
+</div>
+</div>
+</div>
+</main>
+<footer class="mt-auto py-8 px-6 text-center border-t border-surface-container-highest">
+<p class="text-xs text-on-surface-variant font-medium uppercase tracking-widest">
+            Powered by Google Security Protocol
+        </p>
+</footer>
+<div class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-white/80 backdrop-blur-2xl flex justify-around items-center px-4 pb-6 pt-3 shadow-[0_-4px_20px_rgba(0,90,193,0.06)] rounded-t-3xl">
+<div class="flex flex-col items-center justify-center text-slate-500 px-5 py-2">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[11px] font-bold uppercase tracking-wider mt-1">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-500 px-5 py-2">
+<span class="material-symbols-outlined" data-icon="devices">devices</span>
+<span class="text-[11px] font-bold uppercase tracking-wider mt-1">Devices</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-500 px-5 py-2">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="text-[11px] font-bold uppercase tracking-wider mt-1">Settings</span>
+</div>
+</div>
+</body></html>

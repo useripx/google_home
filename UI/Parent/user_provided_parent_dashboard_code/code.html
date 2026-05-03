@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#eeb200",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#d6e4f3",
+                        "tertiary-fixed": "#febf0d",
+                        "surface-tint": "#005ac1",
+                        "tertiary": "#7a5a00",
+                        "surface-container-high": "#dee9f6",
+                        "surface-container-highest": "#d6e4f3",
+                        "secondary-fixed-dim": "#7bec8e",
+                        "error": "#9f403d",
+                        "primary-fixed": "#d8e2ff",
+                        "surface-container": "#e7eff9",
+                        "tertiary-container": "#febf0d",
+                        "surface": "#f7f9ff",
+                        "error-container": "#fe8983",
+                        "primary-container": "#d8e2ff",
+                        "secondary-container": "#89fa9b",
+                        "tertiary-dim": "#6b4e00",
+                        "on-primary-fixed": "#003d86",
+                        "on-surface": "#27343f",
+                        "secondary-fixed": "#89fa9b",
+                        "inverse-on-surface": "#999da3",
+                        "outline-variant": "#a6b3c2",
+                        "error-dim": "#4e0309",
+                        "on-primary-container": "#004ea9",
+                        "outline": "#6f7c89",
+                        "on-error-container": "#752121",
+                        "primary-dim": "#004faa",
+                        "on-error": "#fff7f6",
+                        "primary-fixed-dim": "#c3d4ff",
+                        "on-tertiary-fixed-variant": "#614700",
+                        "secondary": "#006e2d",
+                        "inverse-primary": "#4d8efe",
+                        "surface-bright": "#f7f9ff",
+                        "on-tertiary-fixed": "#3d2b00",
+                        "on-tertiary": "#fff8f1",
+                        "on-tertiary-container": "#563e00",
+                        "primary": "#005ac1",
+                        "on-primary-fixed-variant": "#0058bc",
+                        "on-background": "#27343f",
+                        "on-secondary-fixed": "#004a1c",
+                        "inverse-surface": "#0a0f13",
+                        "on-surface-variant": "#53606d",
+                        "surface-dim": "#cbdced",
+                        "secondary-dim": "#006126",
+                        "on-primary": "#f7f7ff",
+                        "on-secondary-fixed-variant": "#006a2b",
+                        "on-secondary-container": "#005f25",
+                        "surface-container-low": "#eff4fc",
+                        "on-secondary": "#e9ffe6",
+                        "background": "#f7f9ff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface antialiased min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl shadow-sm dark:shadow-none flex justify-between items-center px-6 py-4 w-full docked full-width top-0 sticky z-50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-blue-700 dark:text-blue-400" data-icon="security">security</span>
+<h1 class="text-xl font-black text-blue-700 dark:text-blue-400 tracking-tight">Sayang Anak</h1>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-slate-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors p-2 rounded-full cursor-pointer" data-icon="notifications">notifications</span>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center">
+<span class="text-xs font-bold text-on-primary-container">JD</span>
+</div>
+</div>
+</header>
+<main class="max-w-6xl mx-auto px-4 md:px-8 mt-6">
+<!-- Status Indicator Bar -->
+<div class="mb-8 flex items-center justify-between px-6 py-3 bg-secondary-container/30 rounded-full border border-secondary/10">
+<div class="flex items-center gap-3">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-secondary"></span>
+</span>
+<p class="text-sm font-semibold text-on-secondary-container tracking-tight">Tracking Active - Real-time updates every 10s</p>
+</div>
+<span class="text-[10px] font-bold uppercase tracking-widest text-on-surface-variant bg-surface-container-highest px-3 py-1 rounded-full">v14.2.0_build_99</span>
+</div>
+<!-- Main Dashboard Bento Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+<!-- Map Component (High-Tier Glass Card) -->
+<section class="lg:col-span-8 relative rounded-[2rem] overflow-hidden min-h-[500px] shadow-[0_20px_50px_rgba(0,90,193,0.08)] bg-surface-container-low border border-white/40">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover grayscale-[20%] opacity-90" data-alt="high quality satellite map view of a suburban neighborhood with detailed streets and green parks at soft daylight" data-location="Jakarta" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZHPz-elnMQ7gZGVkIjdYZMO-TawVeEjDe8FOmSmnZAa_rYnpRQMZb2PuCIbnm_8PTwPCDjiUpPIo0CCf1aWDgwIIp0SG-ng5bwjWd8S4F1N8yWvBHDQQGDbcp4V5JLZLlEgr8VUO_UAGMAAscWP4QYQB-d3re6yB73yYmIPyCTEp8Yl1URc7meoAipIm0wrCnaQ4YvDTbENndSxeJIhEircghOWD0JaefUfOJJ6MWx-QIvmuodrYVof70g_EwKbZ7gCzHwO5L2d8"/>
+</div>
+<!-- Floating Map Overlays -->
+<div class="absolute top-6 left-6 z-10">
+<div class="bg-surface-container-lowest/80 backdrop-blur-xl p-4 rounded-2xl shadow-sm border border-outline-variant/10">
+<p class="text-[11px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">Current Location</p>
+<h2 class="text-lg font-bold text-on-surface tracking-tight">Menteng Park, Central</h2>
+</div>
+</div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+<!-- Child Marker -->
+<div class="relative group cursor-pointer">
+<div class="absolute -inset-4 bg-primary/20 rounded-full blur-xl scale-125"></div>
+<div class="relative flex flex-col items-center">
+<div class="w-14 h-14 rounded-full border-4 border-white shadow-xl overflow-hidden bg-white">
+<img class="w-full h-full object-cover" data-alt="Portrait of a happy 8 year old boy smiling, outdoor natural lighting, high resolution" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA85tq2-Z3lXy90RHZASZ1rbl9UjX6EAiS5knjgFYw4Hgkg_9S0VOvLolW-GWwneNRTEp9kjQtxuL70Fwls72pjNKKUNd5Zn7Sk-jYVSesh5O2TkpdTMVZQtH8_nDDjTtGLFH9kXMtenIsUVsdOvbpmHyJqotHGlcj7JuRj9wjAOsNlNxSPqodekHfQmdCFq696FG7qZRrHchYE-KGDf80ar3MN1bLV3mOl7W-3IoTnRfUYLl8hIn7_1qKHDe21YftrrSq4DIkU2CE"/>
+</div>
+<div class="mt-2 bg-primary px-3 py-1 rounded-full shadow-lg">
+<span class="text-white text-[10px] font-black tracking-tighter uppercase">Child Device</span>
+</div>
+</div>
+</div>
+</div>
+<div class="absolute bottom-6 right-6 z-10 flex flex-col gap-3">
+<button class="w-12 h-12 bg-surface-container-lowest rounded-xl shadow-lg flex items-center justify-center text-primary hover:bg-primary-container transition-all">
+<span class="material-symbols-outlined" data-icon="my_location">my_location</span>
+</button>
+<button class="w-12 h-12 bg-primary rounded-xl shadow-lg flex items-center justify-center text-white hover:opacity-90 transition-all">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+</section>
+<!-- Right Panel: Activity & Controls -->
+<aside class="lg:col-span-4 flex flex-col gap-6">
+<!-- Device Status Card -->
+<div class="bg-white rounded-[2rem] p-6 shadow-sm border border-surface-container">
+<div class="flex items-center justify-between mb-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="smartphone">smartphone</span>
+</div>
+<div>
+<h3 class="text-sm font-bold text-on-surface">Galaxy Tab S9</h3>
+<p class="text-xs text-on-surface-variant">Battery 84% • Connected</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary" data-icon="battery_charging_80">battery_charging_80</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-low rounded-2xl hover:bg-surface-container-high transition-colors group">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="lock">lock</span>
+<span class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">Lock Device</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-low rounded-2xl hover:bg-surface-container-high transition-colors group">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="volume_up">volume_up</span>
+<span class="text-[11px] font-bold uppercase tracking-wider text-on-surface-variant">Play Sound</span>
+</button>
+</div>
+</div>
+<!-- Recent Activity List -->
+<div class="bg-surface-container-low rounded-[2rem] p-8 flex-grow">
+<div class="flex items-center justify-between mb-8">
+<h3 class="text-lg font-bold text-on-surface tracking-tight">Recent Activity</h3>
+<span class="material-symbols-outlined text-on-surface-variant text-sm cursor-pointer" data-icon="history">history</span>
+</div>
+<div class="space-y-8 relative">
+<!-- Connecting Line -->
+<div class="absolute left-[11px] top-4 bottom-4 w-[2px] bg-outline-variant/20"></div>
+<!-- Item 1 -->
+<div class="relative flex items-start gap-4">
+<div class="z-10 w-[24px] h-[24px] rounded-full bg-secondary flex items-center justify-center border-4 border-surface-container-low">
+<span class="material-symbols-outlined text-[12px] text-white" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+</div>
+<div>
+<div class="flex items-baseline gap-2">
+<h4 class="text-sm font-bold text-on-surface">Home</h4>
+<span class="text-[10px] font-medium text-on-surface-variant">10 mins ago</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-1 leading-relaxed">Arrived at Trusted Zone: Residence A</p>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="relative flex items-start gap-4">
+<div class="z-10 w-[24px] h-[24px] rounded-full bg-primary flex items-center justify-center border-4 border-surface-container-low">
+<span class="material-symbols-outlined text-[12px] text-white" data-icon="school" style="font-variation-settings: 'FILL' 1;">school</span>
+</div>
+<div>
+<div class="flex items-baseline gap-2">
+<h4 class="text-sm font-bold text-on-surface">School</h4>
+<span class="text-[10px] font-medium text-on-surface-variant">2 hours ago</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-1 leading-relaxed">Left International Primary School</p>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="relative flex items-start gap-4">
+<div class="z-10 w-[24px] h-[24px] rounded-full bg-outline-variant flex items-center justify-center border-4 border-surface-container-low">
+<span class="material-symbols-outlined text-[12px] text-white" data-icon="location_on" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<div>
+<div class="flex items-baseline gap-2">
+<h4 class="text-sm font-bold text-on-surface">Menteng St.</h4>
+<span class="text-[10px] font-medium text-on-surface-variant">3 hours ago</span>
+</div>
+<p class="text-xs text-on-surface-variant mt-1 leading-relaxed">Movement detected via Route 4</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-10 py-3 text-[11px] font-bold uppercase tracking-widest text-primary border border-primary/20 rounded-xl hover:bg-primary/5 transition-colors">
+                        View Full History
+                    </button>
+</div>
+</aside>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 dark:bg-slate-950/80 backdrop-blur-2xl rounded-t-3xl shadow-[0_-4px_20px_rgba(0,90,193,0.06)]">
+<!-- Dashboard (Active) -->
+<a class="flex flex-col items-center justify-center bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 rounded-2xl px-5 py-2 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="dashboard" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="text-[11px] font-bold uppercase tracking-wider">Dashboard</span>
+</a>
+<!-- Devices -->
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-500 px-5 py-2 hover:opacity-80 transition-opacity active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="devices">devices</span>
+<span class="text-[11px] font-bold uppercase tracking-wider">Devices</span>
+</a>
+<!-- Settings -->
+<a class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-500 px-5 py-2 hover:opacity-80 transition-opacity active:scale-95" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="settings">settings</span>
+<span class="text-[11px] font-bold uppercase tracking-wider">Settings</span>
+</a>
+</nav>
+<!-- FAB for Emergency (High Contextual Suppression - Enabled only for Dashboard) -->
+<button class="fixed right-6 bottom-28 w-16 h-16 bg-gradient-to-br from-error to-error-dim text-white rounded-full shadow-2xl flex items-center justify-center z-40 active:scale-95 duration-150 group">
+<div class="absolute -inset-1 bg-error/20 rounded-full blur-md group-hover:blur-lg transition-all"></div>
+<span class="material-symbols-outlined relative z-10 text-3xl" data-icon="sos">sos</span>
+</button>
+</body></html>

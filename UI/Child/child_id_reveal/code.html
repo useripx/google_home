@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed-dim": "#eeb200",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-variant": "#d6e4f3",
+                    "tertiary-fixed": "#febf0d",
+                    "surface-tint": "#005ac1",
+                    "tertiary": "#7a5a00",
+                    "surface-container-high": "#dee9f6",
+                    "surface-container-highest": "#d6e4f3",
+                    "secondary-fixed-dim": "#7bec8e",
+                    "error": "#9f403d",
+                    "primary-fixed": "#d8e2ff",
+                    "surface-container": "#e7eff9",
+                    "tertiary-container": "#febf0d",
+                    "surface": "#f7f9ff",
+                    "error-container": "#fe8983",
+                    "primary-container": "#d8e2ff",
+                    "secondary-container": "#89fa9b",
+                    "tertiary-dim": "#6b4e00",
+                    "on-primary-fixed": "#003d86",
+                    "on-surface": "#27343f",
+                    "secondary-fixed": "#89fa9b",
+                    "inverse-on-surface": "#999da3",
+                    "outline-variant": "#a6b3c2",
+                    "error-dim": "#4e0309",
+                    "on-primary-container": "#004ea9",
+                    "outline": "#6f7c89",
+                    "on-error-container": "#752121",
+                    "primary-dim": "#004faa",
+                    "on-error": "#fff7f6",
+                    "primary-fixed-dim": "#c3d4ff",
+                    "on-tertiary-fixed-variant": "#614700",
+                    "secondary": "#006e2d",
+                    "inverse-primary": "#4d8efe",
+                    "surface-bright": "#f7f9ff",
+                    "on-tertiary-fixed": "#3d2b00",
+                    "on-tertiary": "#fff8f1",
+                    "on-tertiary-container": "#563e00",
+                    "primary": "#005ac1",
+                    "on-primary-fixed-variant": "#0058bc",
+                    "on-background": "#27343f",
+                    "on-secondary-fixed": "#004a1c",
+                    "inverse-surface": "#0a0f13",
+                    "on-surface-variant": "#53606d",
+                    "surface-dim": "#cbdced",
+                    "secondary-dim": "#006126",
+                    "on-primary": "#f7f7ff",
+                    "on-secondary-fixed-variant": "#006a2b",
+                    "on-secondary-container": "#005f25",
+                    "surface-container-low": "#eff4fc",
+                    "on-secondary": "#e9ffe6",
+                    "background": "#f7f9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Inter"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen flex flex-col overflow-hidden">
+<!-- THE DISGUISE LAYER (The Background Content) -->
+<main class="flex-grow flex flex-col items-center justify-center p-8 bg-surface-dim relative">
+<!-- System Aesthetic Mockup -->
+<div class="w-full max-w-sm space-y-8 opacity-40">
+<div class="flex flex-col items-center space-y-4">
+<div class="w-12 h-12 rounded-full border-4 border-primary border-t-transparent animate-spin opacity-20"></div>
+<div class="text-center space-y-1">
+<p class="text-xs font-mono text-on-surface-variant tracking-widest uppercase">Checking for updates...</p>
+<p class="text-[10px] font-mono text-outline italic">v14.2.0_build_99</p>
+</div>
+</div>
+<!-- Technical Minimalism "Cards" -->
+<div class="space-y-4">
+<div class="h-1 bg-surface-container-highest w-full rounded-full overflow-hidden">
+<div class="bg-primary h-full w-2/3"></div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="h-16 bg-surface-container-low rounded-xl"></div>
+<div class="h-16 bg-surface-container-low rounded-xl"></div>
+</div>
+<div class="h-32 bg-surface-container-low rounded-xl"></div>
+</div>
+</div>
+<!-- DIMMED OVERLAY -->
+<div class="absolute inset-0 bg-inverse-surface/40 backdrop-blur-sm z-40"></div>
+<!-- EASTER EGG MODAL -->
+<div class="relative z-50 w-full max-w-xs bg-surface-container-lowest rounded-[2rem] p-8 shadow-[0_24px_48px_-12px_rgba(0,90,193,0.12)] border border-white/20">
+<div class="flex flex-col items-center text-center">
+<!-- Branding Anchor - Icon Logic -->
+<div class="mb-6 w-14 h-14 rounded-2xl bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined text-3xl" data-icon="security">security</span>
+</div>
+<!-- Editorial Headline -->
+<h1 class="text-xl font-bold text-on-surface tracking-tight mb-2">Device Identity</h1>
+<!-- Silent Sentinel Metadata Style -->
+<div class="bg-surface-container-low px-4 py-3 rounded-2xl w-full mb-8 border border-outline-variant/10">
+<p class="text-[10px] font-bold text-on-surface-variant uppercase tracking-widest mb-1">Child ID</p>
+<p class="text-lg font-mono font-black text-primary tracking-tighter">SA-9921-X</p>
+</div>
+<!-- Action Button - Rounded XL, Gradient Style -->
+<button class="w-full py-4 bg-gradient-to-br from-primary to-primary-dim text-on-primary font-bold rounded-xl active:scale-[0.98] transition-transform duration-150 shadow-lg shadow-primary/20">
+                    Close
+                </button>
+<!-- Technical Footer -->
+<p class="mt-6 text-[10px] text-outline font-medium tracking-wide">AUTHENTICATED SYSTEM ACCESS</p>
+</div>
+</div>
+</main>
+<!-- HIDDEN NAVIGATION CHECK: Prohibited on task-focused screens -->
+<!-- Navigation shell suppressed per "Destination Rule" & "Task-Focused" exclusion -->
+</body></html>

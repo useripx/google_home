@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Google Home - Setup</title>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#f2f3fd",
+                    "surface-variant": "#e0e2ec",
+                    "tertiary": "#795900",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-container": "#987000",
+                    "on-tertiary-fixed": "#261a00",
+                    "secondary-container": "#86f898",
+                    "on-primary-fixed": "#001a41",
+                    "on-tertiary-container": "#ffffff",
+                    "tertiary-fixed-dim": "#fbbc05",
+                    "on-secondary-fixed-variant": "#005320",
+                    "surface": "#f9f9ff",
+                    "on-primary": "#ffffff",
+                    "surface-container-highest": "#e0e2ec",
+                    "surface-bright": "#f9f9ff",
+                    "outline": "#727785",
+                    "inverse-primary": "#adc7ff",
+                    "outline-variant": "#c1c6d6",
+                    "primary-fixed": "#d8e2ff",
+                    "on-primary-container": "#ffffff",
+                    "secondary-fixed-dim": "#6ddd81",
+                    "on-primary-fixed-variant": "#004493",
+                    "on-error-container": "#93000a",
+                    "secondary-fixed": "#89fa9b",
+                    "tertiary-fixed": "#ffdfa0",
+                    "background": "#f9f9ff",
+                    "primary-container": "#1a73e8",
+                    "primary-fixed-dim": "#adc7ff",
+                    "secondary": "#006e2c",
+                    "on-surface": "#191c23",
+                    "surface-container-high": "#e6e8f2",
+                    "on-tertiary-fixed-variant": "#5c4300",
+                    "inverse-surface": "#2d3038",
+                    "on-secondary-fixed": "#002108",
+                    "on-secondary-container": "#00722f",
+                    "surface-dim": "#d8d9e3",
+                    "inverse-on-surface": "#eff0fa",
+                    "on-background": "#191c23",
+                    "surface-tint": "#005bc0",
+                    "primary": "#005bbf",
+                    "error": "#ba1a1a",
+                    "on-error": "#ffffff",
+                    "surface-container": "#ecedf7",
+                    "on-surface-variant": "#414754",
+                    "on-tertiary": "#ffffff",
+                    "error-container": "#ffdad6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "2xl": "1rem",
+                    "3xl": "1.5rem",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Manrope"],
+                    "body": ["Inter"],
+                    "label": ["Inter"]
+            }
+          },
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-effect {
+            background: rgba(249, 249, 255, 0.7);
+            backdrop-filter: blur(20px);
+        }
+        body {
+            min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface min-h-screen flex flex-col">
+<header class="w-full px-6 py-10 flex flex-col items-center">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="home" style="font-variation-settings: 'FILL' 1;">home</span>
+<h1 class="font-headline font-extrabold text-2xl tracking-tight text-on-surface">Google Home</h1>
+</div>
+<div class="bg-secondary-container/20 px-3 py-1 rounded-full">
+<p class="font-label text-[10px] font-bold uppercase tracking-widest text-secondary">Secure Environment</p>
+</div>
+</header>
+<main class="flex-1 flex flex-col items-center px-6 max-w-md mx-auto w-full pb-12">
+<section class="text-center mb-10">
+<h2 class="font-headline text-3xl font-bold mb-3 text-on-surface leading-tight">Pilih mode Anda</h2>
+<p class="font-body text-on-surface-variant text-sm leading-relaxed">
+                Untuk menjaga privasi, aplikasi ini akan tampil sebagai <span class="font-semibold text-on-surface">Google Home</span> pada layar utama perangkat Anda.
+            </p>
+</section>
+<div class="grid grid-cols-1 gap-6 w-full">
+<!-- Parent Card -->
+<button class="group relative overflow-hidden flex flex-col text-left bg-surface-container-lowest rounded-3xl p-6 shadow-none hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 transform active:scale-95 border-none outline-none ring-1 ring-outline-variant/10">
+<div class="flex justify-between items-start mb-6 w-full">
+<div class="p-4 bg-primary-container rounded-2xl text-white shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-3xl" data-icon="parental_control">tv_options_parental</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-primary transition-colors" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-2">Mode Orang Tua</h3>
+<p class="font-body text-sm text-on-surface-variant">Kelola perangkat, pantau lokasi secara real-time, dan terima peringatan keselamatan untuk anggota keluarga Anda.</p>
+</div>
+<div class="absolute -bottom-10 -right-10 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
+</button>
+<!-- Kids Card -->
+<button class="group relative overflow-hidden flex flex-col text-left bg-surface-container-low rounded-3xl p-6 shadow-none hover:shadow-xl hover:shadow-secondary/5 transition-all duration-300 transform active:scale-95 border-none outline-none ring-1 ring-outline-variant/10">
+<div class="flex justify-between items-start mb-6 w-full">
+<div class="p-4 bg-secondary rounded-2xl text-white shadow-lg shadow-secondary/20">
+<span class="material-symbols-outlined text-3xl" data-icon="child_care">child_care</span>
+</div>
+<span class="material-symbols-outlined text-outline-variant group-hover:text-secondary transition-colors" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<div>
+<h3 class="font-headline text-xl font-bold text-on-surface mb-2">Mode Anak</h3>
+<p class="font-body text-sm text-on-surface-variant">Siapkan perangkat ini untuk dipantau. Proses latar belakang yang tersamar memastikan perlindungan terus-menerus tanpa gangguan.</p>
+</div>
+<div class="absolute -bottom-10 -right-10 w-32 h-32 bg-secondary/5 rounded-full blur-3xl group-hover:bg-secondary/10 transition-colors"></div>
+</button>
+</div>
+<section class="mt-12 flex flex-col items-center">
+<div class="flex items-center gap-3 bg-surface-container px-5 py-3 rounded-2xl">
+<span class="material-symbols-outlined text-secondary" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<p class="font-label text-xs font-medium text-on-surface-variant">End-to-end encrypted family link</p>
+</div>
+<p class="mt-8 text-[10px] text-outline text-center px-4 leading-relaxed uppercase tracking-widest font-bold">
+                Identity Protection Protocol: "Google Home" UI Skin Active
+            </p>
+</section>
+</main>
+<div class="fixed bottom-0 left-0 w-full h-32 opacity-10 pointer-events-none overflow-hidden">
+<div class="absolute -bottom-10 left-1/4 w-64 h-64 bg-primary rounded-full blur-[100px]"></div>
+<div class="absolute -bottom-20 right-1/4 w-80 h-80 bg-secondary rounded-full blur-[120px]"></div>
+</div>
+</body></html>

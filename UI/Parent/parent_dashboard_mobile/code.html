@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sayang Anak Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#c1c6d6",
+                        "tertiary-fixed": "#ffdfa0",
+                        "on-tertiary-container": "#ffffff",
+                        "background": "#f9f9ff",
+                        "on-surface": "#191c23",
+                        "surface-container": "#ecedf7",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#004493",
+                        "on-primary-container": "#ffffff",
+                        "on-primary-fixed": "#001a41",
+                        "secondary-fixed-dim": "#6ddd81",
+                        "surface-variant": "#e0e2ec",
+                        "tertiary-fixed-dim": "#fbbc05",
+                        "surface-dim": "#d8d9e3",
+                        "secondary-container": "#86f898",
+                        "on-tertiary-fixed": "#261a00",
+                        "inverse-surface": "#2d3038",
+                        "on-tertiary-fixed-variant": "#5c4300",
+                        "primary-fixed-dim": "#adc7ff",
+                        "primary-container": "#1a73e8",
+                        "on-secondary-container": "#00722f",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#414754",
+                        "secondary-fixed": "#89fa9b",
+                        "outline": "#727785",
+                        "inverse-primary": "#adc7ff",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#005bc0",
+                        "tertiary": "#795900",
+                        "surface-container-low": "#f2f3fd",
+                        "secondary": "#006e2c",
+                        "primary-fixed": "#d8e2ff",
+                        "on-secondary-fixed": "#002108",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#987000",
+                        "surface-bright": "#f9f9ff",
+                        "inverse-on-surface": "#eff0fa",
+                        "primary": "#005bbf",
+                        "on-secondary-fixed-variant": "#005320",
+                        "on-background": "#191c23",
+                        "surface-container-highest": "#e0e2ec",
+                        "surface": "#f9f9ff",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#e6e8f2",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface min-h-screen pb-24">
+<!-- Top Status Bar (Dynamic Alert Style) -->
+<div class="sticky top-0 z-50 w-full bg-primary-container text-on-primary-container px-6 py-2.5 flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-2">
+<span class="flex h-2 w-2 rounded-full bg-secondary-fixed animate-pulse"></span>
+<span class="text-xs font-medium tracking-tight font-body">Tracking Active - Real-time updates every 10s</span>
+</div>
+<span class="material-symbols-outlined text-[18px]">sync</span>
+</div>
+<!-- Header Section (TopAppBar Shared Component Mapping) -->
+<header class="w-full top-0 sticky z-40 bg-[#f9f9ff] flex justify-between items-center px-6 py-4 w-full">
+<div class="flex items-center gap-3">
+<button class="p-2 hover:bg-slate-200/50 rounded-full transition-colors active:scale-95 duration-200 ease-out">
+<span class="material-symbols-outlined text-slate-500" data-icon="menu">menu</span>
+</button>
+<h1 class="font-['Manrope'] font-bold text-lg tracking-tight text-[#191c23]">Google Home</h1>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant/30">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="portrait of a smiling middle aged man in a clean studio setting with soft lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXovDhz9lefhIl8wDlNLzlkDe0kOfWnnxkEhu7NcAF8JELHMlNXz1SzBhDP9rH1O_mC3-o_ZlMXhvMpXY9dB2YDh6G40rNsWHREEqeAh542qvTcknZlM5USMAs7leTinbdxn6QjRT5RxfUOgh_KTZMZkbr13wnHiriITQw6_o6FvZm4F4XfAb2_NWoRvURthed6anD4t34RX_OZ7AMpoBgtdndC8ut2sU8Po6AppQyJIz1ATE-pRt3J7IjTSGtlWu-QS3r0NbfLJNG"/>
+</div>
+</div>
+</header>
+<!-- Map View Section -->
+<main class="px-4 space-y-6">
+<section class="relative w-full aspect-[4/5] rounded-[2rem] overflow-hidden bg-surface-container-high shadow-sm">
+<!-- Map Background Image -->
+<div class="absolute inset-0 w-full h-full bg-cover bg-center" data-alt="detailed clean digital map of a modern city suburb with parks and street grids in soft blue and grey tones" data-location="Jakarta" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBWMd9zEEw5P9IDLKp4YzUGd_NsBVmvc9MBWZIgnW6MPrUTi5VutZHn3qolBh69Mm5sdVT-ewzBJBoS77pxIO4oFGnIGhcVe5Qwu0G5u0JjvBDxS8l6eYIpsPzGb98vQTG2t5vx3fA8x9cwqxyhAplSl8QN0YsmYaecaKF-V0Z7IoTS-eMRb7Zp_y1Ey44HdLPYG00zFyoXnNlzvXHduUAFqnuDkh_JbS2gwN21c03Nt3DZYMimS1bBD7LnOinuW45HiJVtwo-HP_0M')">
+</div>
+<!-- Map Controls -->
+<div class="absolute top-4 right-4 flex flex-col gap-2">
+<button class="bg-surface-container-lowest/90 backdrop-blur-md p-3 rounded-2xl shadow-lg active:scale-95 transition-transform text-on-surface-variant">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="bg-surface-container-lowest/90 backdrop-blur-md p-3 rounded-2xl shadow-lg active:scale-95 transition-transform text-on-surface-variant">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="bg-surface-container-lowest/90 backdrop-blur-md p-3 rounded-2xl shadow-lg mt-4 active:scale-95 transition-transform text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">my_location</span>
+</button>
+</div>
+<!-- Custom Avatar Marker -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+<div class="relative">
+<div class="absolute inset-0 bg-primary/20 rounded-full scale-[2.5] animate-ping"></div>
+<div class="relative w-16 h-16 rounded-full border-4 border-white shadow-2xl overflow-hidden z-10">
+<img alt="Child avatar" class="w-full h-full object-cover" data-alt="close up of a happy young boy with a bright smile outdoors in a park" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA14D17abQzdwHbBnidV5RR-j2xqnASiBTRquaxUV0T4srx8uZ7u_C2PAVcu0nQ1jyIAudY5tsQ9v25bt8fUlFTnGUWRQswNjYgdzGuHPPA3WW72wkty6BxvMTdOOi5Xhe6c0s48fa1KvG46ZXKzKEygalNeA6Ch5XgM8JoTZsSvxunWkdnAmrMxK4lhJ8qWo6TaOV4i_PTEc2vRhEz7emXWe32KYuNkP0C0rlkYtgqW2GmrjP--BLoY_Gcau0-kVeLxXWo5JVFB4hP"/>
+</div>
+<div class="absolute -bottom-1 left-1/2 -translate-x-1/2 w-4 h-4 bg-white rotate-45 z-0 shadow-xl"></div>
+</div>
+<div class="mt-3 px-4 py-1.5 bg-primary rounded-full shadow-lg">
+<span class="text-white text-xs font-bold font-headline tracking-wide">RAIHAN</span>
+</div>
+</div>
+</section>
+<!-- Device Status Card -->
+<section class="bg-surface-container-low rounded-[1.5rem] p-6 space-y-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="p-3 bg-primary-fixed rounded-2xl">
+<span class="material-symbols-outlined text-primary" data-icon="tablet_android">tablet_android</span>
+</div>
+<div>
+<h3 class="font-headline font-bold text-on-surface">Galaxy Tab S9</h3>
+<div class="flex items-center gap-2 mt-0.5">
+<span class="material-symbols-outlined text-[16px] text-secondary" style="font-variation-settings: 'FILL' 1;">battery_6_bar</span>
+<span class="text-xs font-medium text-on-surface-variant font-body">84% • Connected</span>
+</div>
+</div>
+</div>
+<button class="p-2 text-outline hover:bg-surface-container transition-colors rounded-full">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex items-center justify-center gap-2 py-4 bg-surface-container-highest/50 text-on-surface-variant font-bold text-xs tracking-widest rounded-xl active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+                    LOCK DEVICE
+                </button>
+<button class="flex items-center justify-center gap-2 py-4 bg-primary text-white font-bold text-xs tracking-widest rounded-xl active:scale-[0.98] transition-all shadow-md">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">volume_up</span>
+                    PLAY SOUND
+                </button>
+</div>
+</section>
+<!-- Recent Activity List -->
+<section class="space-y-4 pb-8">
+<h2 class="font-headline font-extrabold text-lg text-on-surface px-2">Recent Activity</h2>
+<div class="space-y-0 relative">
+<!-- Timeline vertical line -->
+<div class="absolute left-7 top-6 bottom-6 w-[2px] bg-surface-container-highest"></div>
+<!-- Activity Item 1 -->
+<div class="relative flex items-center gap-5 p-4 rounded-2xl hover:bg-surface-container-low transition-colors">
+<div class="relative z-10 w-6 h-6 rounded-full bg-secondary-container flex items-center justify-center ring-4 ring-surface">
+<span class="material-symbols-outlined text-[14px] text-on-secondary-container" style="font-variation-settings: 'FILL' 1;">home</span>
+</div>
+<div class="flex-1">
+<p class="font-headline font-bold text-sm text-on-surface">Home</p>
+<p class="text-xs text-on-surface-variant font-body mt-0.5">Arrived at 02:45 PM</p>
+</div>
+<span class="text-[10px] font-bold text-outline-variant font-body uppercase tracking-wider">Just Now</span>
+</div>
+<!-- Activity Item 2 -->
+<div class="relative flex items-center gap-5 p-4 rounded-2xl hover:bg-surface-container-low transition-colors">
+<div class="relative z-10 w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center ring-4 ring-surface">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">school</span>
+</div>
+<div class="flex-1">
+<p class="font-headline font-bold text-sm text-on-surface">School</p>
+<p class="text-xs text-on-surface-variant font-body mt-0.5">Left at 02:15 PM</p>
+</div>
+<span class="text-[10px] font-bold text-outline-variant font-body uppercase tracking-wider">30m ago</span>
+</div>
+<!-- Activity Item 3 -->
+<div class="relative flex items-center gap-5 p-4 rounded-2xl hover:bg-surface-container-low transition-colors">
+<div class="relative z-10 w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center ring-4 ring-surface">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">location_on</span>
+</div>
+<div class="flex-1">
+<p class="font-headline font-bold text-sm text-on-surface">Menteng St.</p>
+<p class="text-xs text-on-surface-variant font-body mt-0.5">Passed through at 02:00 PM</p>
+</div>
+<span class="text-[10px] font-bold text-outline-variant font-body uppercase tracking-wider">45m ago</span>
+</div>
+</div>
+</section>
+</main>
+<!-- SOS FAB -->
+<button class="fixed bottom-28 right-6 w-16 h-16 bg-error rounded-full shadow-2xl flex items-center justify-center text-white active:scale-90 duration-150 z-50">
+<span class="font-headline font-black text-sm">SOS</span>
+</button>
+<!-- Bottom Navigation (Shared Component Mapping) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl rounded-t-[1.5rem] shadow-[0_-4px_24px_rgba(0,0,0,0.04)]">
+<!-- Devices -->
+<a class="flex flex-col items-center justify-center text-[#414754] dark:text-slate-400 px-5 py-1.5 hover:opacity-80 transition-opacity active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-xl mb-1" data-icon="grid_view">grid_view</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide">Devices</span>
+</a>
+<!-- Automations (Active Context: Dashboard mapping to a primary view) -->
+<a class="flex flex-col items-center justify-center bg-[#ecedf7] dark:bg-blue-900/30 text-[#005bc0] dark:text-blue-200 rounded-2xl px-5 py-1.5 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-xl mb-1" data-icon="routine" style="font-variation-settings: 'FILL' 1;">routine</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide">Automations</span>
+</a>
+<!-- Safety -->
+<a class="flex flex-col items-center justify-center text-[#414754] dark:text-slate-400 px-5 py-1.5 hover:opacity-80 transition-opacity active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-xl mb-1" data-icon="shield">shield</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide">Safety</span>
+</a>
+<!-- Settings -->
+<a class="flex flex-col items-center justify-center text-[#414754] dark:text-slate-400 px-5 py-1.5 hover:opacity-80 transition-opacity active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined text-xl mb-1" data-icon="settings">settings</span>
+<span class="font-['Inter'] text-[10px] font-medium tracking-wide">Settings</span>
+</a>
+</nav>
+</body></html>
