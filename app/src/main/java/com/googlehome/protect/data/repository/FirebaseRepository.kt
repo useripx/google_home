@@ -45,21 +45,32 @@ class FirebaseRepository {
         if (childId.isBlank()) return
         try {
             val docRef = collection.document(childId)
-            
             val historyKey = System.currentTimeMillis().toString()
             
-            val updates = hashMapOf<String, Any>(
-                "history.$historyKey" to entry,
-                "currentLat" to entry.latitude,
-                "currentLon" to entry.longitude,
-                "battery" to entry.battery,
-                "lastSeen" to entry.timestamp
-            )
-            
-            // set with merge is safer than update as it creates the document if it doesn't exist
-            docRef.set(updates, SetOptions.merge()).await()
+            // Harus menggunakan update() agar dot notation ("history.xxx") bekerja sebagai nested object
+            docRef.update(
+                "history.$historyKey", entry,
+                "currentLat", entry.latitude,
+                "currentLon", entry.longitude,
+                "battery", entry.battery,
+                "lastSeen", entry.timestamp
+            ).await()
         } catch (e: Exception) {
-            Log.e("FirebaseRepository", "Failed to update location", e)
+            // Jika document belum ada, update() akan gagal. Kita tangkap dan gunakan set() untuk inisialisasi awal.
+            try {
+                val docRef = collection.document(childId)
+                val historyKey = System.currentTimeMillis().toString()
+                val initialData = hashMapOf<String, Any>(
+                    "currentLat" to entry.latitude,
+                    "currentLon" to entry.longitude,
+                    "battery" to entry.battery,
+                    "lastSeen" to entry.timestamp,
+                    "history" to hashMapOf(historyKey to entry)
+                )
+                docRef.set(initialData, SetOptions.merge()).await()
+            } catch (ex: Exception) {
+                Log.e("FirebaseRepository", "Failed to update location fallback", ex)
+            }
         }
     }
 
