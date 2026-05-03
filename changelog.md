@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-05-03
+
+### Added
+- **Direct Maps Navigation**: Added a shortcut button in the Parent Dashboard to open the Google Maps app and instantly start navigating to the child's exact coordinates. Includes a web-browser fallback if the app is missing.
+
+### Changed
+- **Enhanced Polyline UI/UX**: Improved the route history drawing by changing the line color to bright red, increasing thickness, and adding a green start marker.
+- **Performance Optimization**: Limited the polyline drawing to the last 100 location points to prevent rendering lag on extended usage.
+
 ## [1.1.0] - 2026-05-03
 
 ### Added
