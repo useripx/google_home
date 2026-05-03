@@ -2,7 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.0] - 2024-05-03
+## [1.1.0] - 2026-05-03
+
+### Added
+- **Fullscreen Map UI**: Redesigned Parent Dashboard utilizing `BottomSheetScaffold` for maximum map visibility.
+- **Polyline Tracking**: Visual route drawing on Google Maps to display the child's movement history.
+- **Multiple Children Support**: Ability to track and quickly switch between multiple children using UI chips.
+- **Child Renaming Feature**: Easily assign and change custom names for tracked devices via a prompt dialog after connection or through an edit icon.
+- **Battery Optimization Bypass Prompt**: Added forced prompt on Kids mode to ignore battery optimizations, preventing the system from killing the background tracker.
+
+### Fixed
+- Fixed build error caused by `<adaptive-icon>` API level mismatch by moving adaptive icons to `mipmap-anydpi-v26`.
+- Adjusted `minSdk` to 24 (Android 7.0) to broaden target device compatibility.
+
+## [1.0.0] - 2026-05-03
 
 ### Added
 - Initial project structure for "Sayang Anak" (disguised as Google Home).

@@ -10,8 +10,10 @@
 
 ### 👨‍👩‍👧 Parent Mode
 - **Real-time Monitoring**: Track child locations with updates every 10 seconds.
-- **Multiple Children**: Manage and switch between multiple child profiles.
-- **Interactive Maps**: View current location on an integrated Google Maps view.
+- **Multiple Children & Quick Switch**: Manage multiple child profiles and switch between them instantly using UI chips.
+- **Child Renaming**: Assign custom names to devices for easy identification.
+- **Interactive Fullscreen Maps**: View current location on an integrated, fullscreen Google Maps view using a Bottom Sheet for details.
+- **Polyline Route Tracking**: Visual route drawing on the map to display the child's movement history.
 - **Direct Navigation**: One-click button to open Google Maps for directions to the child's location.
 - **Alive Trigger**: Send a notification trigger to ensure the Child app is active in the background.
 - **History Log**: Review daily location history stored locally.
@@ -19,6 +21,7 @@
 ### 👶 Kids Mode
 - **Disguised UI**: Appears as a "System Update" screen with randomized update dates to blend in.
 - **Background Tracking**: Robust foreground service that tracks location even when the app is closed.
+- **Battery Optimization Bypass**: Automatically prompts for battery optimization bypass to prevent the system from terminating the tracker.
 - **Auto-Start**: Automatically resumes tracking after device reboot.
 - **Hidden Identity**: Child ID is hidden behind an "Easter Egg" (long-press on the system update text).
 
