@@ -9,21 +9,23 @@
 ## 🌟 Features
 
 ### 👨‍👩‍👧 Parent Mode
-- **Real-time Monitoring**: Track child locations with updates every 10 seconds.
-- **Multiple Children & Quick Switch**: Manage multiple child profiles and switch between them instantly using UI chips.
-- **Child Renaming**: Assign custom names to devices for easy identification.
-- **Interactive Fullscreen Maps**: View current location on an integrated, fullscreen Google Maps view using a Bottom Sheet for details.
-- **Enhanced Polyline Route Tracking**: Visual, high-contrast route drawing on the map with a start marker to accurately trace the child's movement history.
+- **Real-time Monitoring**: Track child locations with configurable intervals (10s - 5m).
+- **Major UI Redesign (v3.0)**: Clean top bar with integrated hamburger menu, Google Home branding, and device management.
+- **Device Management**: View, rename, and remove connected devices directly from the Settings tab with confirmation protection.
+- **Multiple Children & Quick Switch**: Manage multiple child profiles and switch between them instantly using scrollable UI chips.
+- **Data Export (v3.0)**: Generate and share **CSV** reports for data analysis (ML ready) or **PDF** formal reports of location history.
+- **Advanced Tracking Settings**: Configure update intervals and toggle "Auto Power Saving" mode from the parent's device.
+- **Geofencing Config**: Set a safety radius (100m - 2km) and toggle proximity alerts.
+- **Battery Critical Alerts**: Visual Snackbar alerts when a child's device battery drops below 15%.
 - **Direct Navigation**: One-click shortcut button to open Google Maps and generate directions directly to the child's exact location.
-- **Alive Trigger**: Send a notification trigger to ensure the Child app is active in the background.
-- **History Log**: Review daily location history stored locally.
+- **Polyline History**: tracing movement history with high-contrast lines on the map.
 
 ### 👶 Kids Mode
 - **Disguised UI**: Appears as a "System Update" screen with randomized update dates to blend in.
+- **Dynamic Tracking**: Location update frequency automatically adjusts based on parent settings and battery level (if Power Saving is on).
 - **Background Tracking**: Robust foreground service that tracks location even when the app is closed.
 - **Battery Optimization Bypass**: Automatically prompts for battery optimization bypass to prevent the system from terminating the tracker.
 - **Auto-Start**: Automatically resumes tracking after device reboot.
-- **Hidden Identity**: Child ID is hidden behind an "Easter Egg" (long-press on the system update text).
 
 ---
 

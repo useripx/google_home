@@ -2,6 +2,26 @@
 
 All notable changes to this project will be documented in this file.
 
+## [3.0.0] - 2026-05-03
+
+### Added
+- **Major UI Redesign**: Swapped Top Bar order for better aesthetics. Google Home header is now at the top, followed by the Status Bar and scrollable child chips.
+- **Device Management**: Added a dedicated management section in Settings to view and remove connected devices with a confirmation dialog.
+- **Advanced Tracking Settings**: Added configurable tracking intervals (10s, 30s, 1m, 5m) and an "Auto Power Saving" toggle.
+- **Geofencing UI**: Implemented a Geofencing configuration section with a radius slider (100m - 2km) and an activation toggle.
+- **Data Export**: Integrated CSV (Machine Learning dataset format) and PDF (Formal Report format) export features with file sharing capabilities.
+- **Battery Critical Alerts**: Real-time Snackbar notification in Parent Dashboard when a child's battery drops below 15%.
+- **History Management**: Added a feature to permanently clear location history for a specific device.
+
+### Changed
+- **Location Throttling**: The background service now dynamically adjusts tracking intervals based on server-side settings and battery levels (Auto Power Saving).
+- **Settings Tab**: Fully overhauled the Settings tab into a functional dashboard.
+
+### Fixed
+- **Top Bar Gaps**: Eliminated unwanted white space between the status bar and header by optimizing `WindowInsets`.
+- **DataStore Sync**: Fixed issues with local settings not persisting correctly across sessions.
+
+
 ## [1.2.0] - 2026-05-03
 
 ### Added

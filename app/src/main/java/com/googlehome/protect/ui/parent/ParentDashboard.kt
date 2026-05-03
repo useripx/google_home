@@ -65,6 +65,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
     val geofenceEnabled by viewModel.geofenceEnabled.collectAsState()
 
     var showClearHistoryDialog by remember { mutableStateOf<String?>(null) }
+    var showRemoveChildDialog by remember { mutableStateOf<String?>(null) }
     var showIntervalPicker by remember { mutableStateOf(false) }
 
     val batteryAlert by viewModel.batteryAlert.collectAsState()
@@ -424,7 +425,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                                         Text(if (id == trackingId) childData?.name?.ifEmpty { id } ?: id else id, fontWeight = FontWeight.Bold)
                                         Text("ID: $id", fontSize = 12.sp, color = Color.Gray)
                                     }
-                                    IconButton(onClick = { viewModel.removeChild(id) }) {
+                                    IconButton(onClick = { showRemoveChildDialog = id }) {
                                         Icon(Icons.Default.Delete, contentDescription = "Remove", tint = Color.Red)
                                     }
                                 }
@@ -599,6 +600,25 @@ fun ParentDashboard(viewModel: ParentViewModel) {
             },
             dismissButton = {
                 TextButton(onClick = { showClearHistoryDialog = null }) { Text("BATAL") }
+            }
+        )
+    }
+
+    if (showRemoveChildDialog != null) {
+        AlertDialog(
+            onDismissRequest = { showRemoveChildDialog = null },
+            title = { Text("Hapus Perangkat?") },
+            text = { 
+                Text("Apakah anda yakin ingin menghapus ${if (showRemoveChildDialog == trackingId) childData?.name ?: showRemoveChildDialog else showRemoveChildDialog}?") 
+            },
+            confirmButton = {
+                TextButton(onClick = { 
+                    showRemoveChildDialog?.let { viewModel.removeChild(it) }
+                    showRemoveChildDialog = null
+                }) { Text("HAPUS", color = Color.Red) }
+            },
+            dismissButton = {
+                TextButton(onClick = { showRemoveChildDialog = null }) { Text("BATAL") }
             }
         )
     }
