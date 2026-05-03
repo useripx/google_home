@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 
 import com.googlehome.protect.data.ModeManager
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.stateIn
 
 class ParentViewModel(private val repository: FirebaseRepository, private val modeManager: ModeManager) : ViewModel() {
 
@@ -19,6 +20,11 @@ class ParentViewModel(private val repository: FirebaseRepository, private val mo
 
     private val _trackingId = MutableStateFlow<String?>(null)
     val trackingId: StateFlow<String?> = _trackingId.asStateFlow()
+
+    val trackedChildrenIds: StateFlow<Set<String>> = modeManager.trackedChildrenIds
+        .stateIn(viewModelScope, kotlinx.coroutines.flow.SharingStarted.Lazily, emptySet())
+
+    private var trackingJob: kotlinx.coroutines.Job? = null
 
     init {
         viewModelScope.launch {
@@ -31,7 +37,8 @@ class ParentViewModel(private val repository: FirebaseRepository, private val mo
 
     fun startTracking(childId: String) {
         _trackingId.value = childId
-        viewModelScope.launch {
+        trackingJob?.cancel()
+        trackingJob = viewModelScope.launch {
             modeManager.setTrackedChildId(childId)
             repository.getChildLocation(childId).collect {
                 _childData.value = it

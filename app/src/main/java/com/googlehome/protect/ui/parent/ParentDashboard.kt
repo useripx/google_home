@@ -3,6 +3,7 @@ package com.googlehome.protect.ui.parent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -13,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -33,6 +35,7 @@ import kotlinx.coroutines.launch
 fun ParentDashboard(viewModel: ParentViewModel) {
     val childData by viewModel.childData.collectAsState()
     val trackingId by viewModel.trackingId.collectAsState()
+    val trackedChildrenIds by viewModel.trackedChildrenIds.collectAsState()
     
     var showAddChildDialog by remember { mutableStateOf(false) }
     var inputId by remember { mutableStateOf("") }
@@ -127,7 +130,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
             when (selectedTab) {
                 0 -> {
                     // MAPS/DEVICES SCREEN
-                    if (trackingId == null) {
+                    if (trackingId == null && trackedChildrenIds.isEmpty()) {
                         Box(Modifier.fillMaxSize().padding(innerPadding), contentAlignment = Alignment.Center) {
                             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                                 Text("No child device connected", color = Color.Gray)
@@ -142,95 +145,156 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                                 CircularProgressIndicator(modifier = Modifier.size(48.dp), color = Color(0xFF1A73E8))
                                 Spacer(modifier = Modifier.height(16.dp))
                                 Text("Waiting for child device signal...", color = Color.Gray)
-                                Text("ID: $trackingId", color = Color.DarkGray, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 4.dp))
-                                Button(onClick = { showAddChildDialog = true }, modifier = Modifier.padding(top = 16.dp)) {
-                                    Text("Change ID")
+                                Text("ID: ${trackingId ?: "Unknown"}", color = Color.DarkGray, fontWeight = FontWeight.Bold, modifier = Modifier.padding(top = 4.dp))
+                                
+                                if (trackedChildrenIds.isNotEmpty()) {
+                                    Spacer(modifier = Modifier.height(32.dp))
+                                    Text("Or select another child:", color = Color.Gray, fontSize = 12.sp)
+                                    LazyRow(modifier = Modifier.padding(top = 8.dp)) {
+                                        items(trackedChildrenIds.toList()) { id ->
+                                            FilterChip(
+                                                selected = id == trackingId,
+                                                onClick = { viewModel.startTracking(id) },
+                                                label = { Text(id.take(8) + "...") },
+                                                modifier = Modifier.padding(horizontal = 4.dp)
+                                            )
+                                        }
+                                    }
                                 }
                             }
                         }
                     } else {
-            val child = childData!!
-            val currentLocation = LatLng(child.currentLat, child.currentLon)
-            val cameraPositionState = rememberCameraPositionState {
-                position = CameraPosition.fromLatLngZoom(currentLocation, 15f)
-            }
-
-            // Sync camera if location changes significantly
-            LaunchedEffect(currentLocation) {
-                cameraPositionState.animate(CameraUpdateFactory.newLatLng(currentLocation))
-            }
-
-            Column(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
-                // Map Section
-                Box(
-                    modifier = Modifier
-                        .weight(1.5f)
-                        .padding(16.dp)
-                        .clip(RoundedCornerShape(32.dp))
-                ) {
-                    GoogleMap(
-                        modifier = Modifier.fillMaxSize(),
-                        cameraPositionState = cameraPositionState,
-                        uiSettings = MapUiSettings(zoomControlsEnabled = false)
-                    ) {
-                        Marker(
-                            state = MarkerState(position = currentLocation),
-                            title = child.name.ifEmpty { "Child Device" },
-                            snippet = "Battery: ${child.battery}%"
-                        )
-                    }
-                }
-
-                // Status Card
-                Card(
-                    modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
-                    colors = CardDefaults.cardColors(containerColor = Color(0xFFF2F3FD)),
-                    shape = RoundedCornerShape(24.dp)
-                ) {
-                    Row(
-                        modifier = Modifier.padding(24.dp),
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Box(
-                            modifier = Modifier
-                                .size(48.dp)
-                                .background(Color(0xFFD8E2FF), RoundedCornerShape(16.dp)),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Icon(Icons.Default.Smartphone, null, tint = Color(0xFF005BBF))
+                        val child = childData!!
+                        val currentLocation = LatLng(child.currentLat, child.currentLon)
+                        val cameraPositionState = rememberCameraPositionState {
+                            position = CameraPosition.fromLatLngZoom(currentLocation, 15f)
                         }
-                        Spacer(modifier = Modifier.width(16.dp))
-                        Column {
-                            Text(child.name.ifEmpty { "Child Device" }, fontWeight = FontWeight.Bold, fontSize = 16.sp)
-                            Row(verticalAlignment = Alignment.CenterVertically) {
-                                Icon(Icons.Default.BatteryChargingFull, null, modifier = Modifier.size(14.dp), tint = Color(0xFF006E2C))
-                                Spacer(modifier = Modifier.width(4.dp))
-                                Text("${child.battery}% • Connected", fontSize = 12.sp, color = Color.Gray)
+
+                        // Sync camera if location changes significantly
+                        LaunchedEffect(currentLocation) {
+                            cameraPositionState.animate(CameraUpdateFactory.newLatLng(currentLocation))
+                        }
+                        
+                        val bottomSheetState = rememberStandardBottomSheetState(
+                            initialValue = SheetValue.PartiallyExpanded
+                        )
+                        val scaffoldState = rememberBottomSheetScaffoldState(
+                            bottomSheetState = bottomSheetState
+                        )
+
+                        BottomSheetScaffold(
+                            modifier = Modifier.padding(innerPadding).fillMaxSize(),
+                            scaffoldState = scaffoldState,
+                            sheetPeekHeight = 140.dp,
+                            sheetContainerColor = Color.White,
+                            sheetContent = {
+                                Column(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)) {
+                                    // Status Card
+                                    Card(
+                                        modifier = Modifier.padding(horizontal = 16.dp).fillMaxWidth(),
+                                        colors = CardDefaults.cardColors(containerColor = Color(0xFFF2F3FD)),
+                                        shape = RoundedCornerShape(24.dp)
+                                    ) {
+                                        Row(
+                                            modifier = Modifier.padding(24.dp),
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            Box(
+                                                modifier = Modifier
+                                                    .size(48.dp)
+                                                    .background(Color(0xFFD8E2FF), RoundedCornerShape(16.dp)),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Icon(Icons.Default.Smartphone, null, tint = Color(0xFF005BBF))
+                                            }
+                                            Spacer(modifier = Modifier.width(16.dp))
+                                            Column {
+                                                Text(child.name.ifEmpty { "Child Device" }, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+                                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                                    Icon(Icons.Default.BatteryChargingFull, null, modifier = Modifier.size(14.dp), tint = Color(0xFF006E2C))
+                                                    Spacer(modifier = Modifier.width(4.dp))
+                                                    Text("${child.battery}% • Connected", fontSize = 12.sp, color = Color.Gray)
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    // Activity List
+                                    Text(
+                                        "Recent Activity",
+                                        modifier = Modifier.padding(16.dp),
+                                        fontWeight = FontWeight.ExtraBold,
+                                        fontSize = 18.sp
+                                    )
+                                    
+                                    val historyList = child.history.values.toList().sortedByDescending { it.timestamp }
+                                    
+                                    LazyColumn(
+                                        modifier = Modifier.fillMaxWidth().heightIn(max = 300.dp),
+                                        contentPadding = PaddingValues(bottom = 16.dp)
+                                    ) {
+                                        items(historyList.take(15)) { entry ->
+                                            ActivityItem(entry)
+                                        }
+                                    }
+                                }
+                            }
+                        ) { sheetPadding ->
+                            Box(modifier = Modifier.fillMaxSize()) {
+                                // Fullscreen Map
+                                GoogleMap(
+                                    modifier = Modifier.fillMaxSize().padding(bottom = sheetPadding.calculateBottomPadding() / 2),
+                                    cameraPositionState = cameraPositionState,
+                                    uiSettings = MapUiSettings(zoomControlsEnabled = false, compassEnabled = true)
+                                ) {
+                                    Marker(
+                                        state = MarkerState(position = currentLocation),
+                                        title = child.name.ifEmpty { "Child Device" },
+                                        snippet = "Battery: ${child.battery}%"
+                                    )
+                                    
+                                    // Polyline for tracking history
+                                    val historyPoints = child.history.values.toList()
+                                        .sortedBy { it.timestamp }
+                                        .map { LatLng(it.latitude, it.longitude) }
+                                    
+                                    if (historyPoints.size > 1) {
+                                        Polyline(
+                                            points = historyPoints,
+                                            color = Color(0xFF1A73E8),
+                                            width = 12f,
+                                            geodesic = true
+                                        )
+                                    }
+                                }
+                                
+                                // Child Selection Overlay
+                                if (trackedChildrenIds.size > 1) {
+                                    LazyRow(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(top = 16.dp),
+                                        contentPadding = PaddingValues(horizontal = 16.dp)
+                                    ) {
+                                        items(trackedChildrenIds.toList()) { id ->
+                                            FilterChip(
+                                                selected = id == trackingId,
+                                                onClick = { viewModel.startTracking(id) },
+                                                label = { Text(if (id == trackingId) child.name.ifEmpty { "Active Child" } else id.take(6) + "..") },
+                                                colors = FilterChipDefaults.filterChipColors(
+                                                    containerColor = Color.White.copy(alpha = 0.9f),
+                                                    selectedContainerColor = Color(0xFF1A73E8),
+                                                    selectedLabelColor = Color.White
+                                                ),
+                                                border = null,
+                                                modifier = Modifier.padding(end = 8.dp).shadow(2.dp, RoundedCornerShape(8.dp))
+                                            )
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
-                }
-
-                // Activity List
-                Text(
-                    "Recent Activity",
-                    modifier = Modifier.padding(16.dp),
-                    fontWeight = FontWeight.ExtraBold,
-                    fontSize = 18.sp
-                )
-                
-                val historyList = child.history.values.toList().sortedByDescending { it.timestamp }
-                
-                LazyColumn(
-                    modifier = Modifier.weight(1f).fillMaxWidth(),
-                    contentPadding = PaddingValues(bottom = 16.dp)
-                ) {
-                    items(historyList.take(10)) { entry ->
-                        ActivityItem(entry)
-                    }
-                }
-                    }
-                }
                 } // This brace closes the 0 -> branch
                 1 -> {
                     // SAFETY SCREEN
@@ -275,6 +339,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                     if (inputId.isNotBlank()) {
                         viewModel.startTracking(inputId)
                         showAddChildDialog = false
+                        inputId = ""
                     }
                 }) {
                     Text("CONNECT")

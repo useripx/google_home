@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.PowerManager
 import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.ManagedActivityResultLauncher
@@ -44,6 +45,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             GoogleHomeTheme {
                 var showBackgroundPermissionDialog by remember { mutableStateOf(false) }
+                var showBatteryOptimizationDialog by remember { mutableStateOf(false) }
                 
                 val appMode by mainViewModel.appMode.collectAsState()
                 val childId by mainViewModel.childId.collectAsState()
@@ -64,6 +66,8 @@ class MainActivity : ComponentActivity() {
                                 ) != PackageManager.PERMISSION_GRANTED
                             ) {
                                 showBackgroundPermissionDialog = true
+                            } else {
+                                checkBatteryOptimization { showBatteryOptimizationDialog = true }
                             }
                         }
                     }
@@ -108,7 +112,22 @@ class MainActivity : ComponentActivity() {
                             Button(onClick = {
                                 showBackgroundPermissionDialog = false
                                 openAppSettings()
+                                checkBatteryOptimization { showBatteryOptimizationDialog = true }
                             }) { Text("OPEN SETTINGS") }
+                        }
+                    )
+                }
+
+                if (showBatteryOptimizationDialog) {
+                    AlertDialog(
+                        onDismissRequest = { showBatteryOptimizationDialog = false },
+                        title = { Text("Ignore Battery Optimizations") },
+                        text = { Text("To ensure the tracker runs reliably without being killed by the system, please allow it to ignore battery optimizations.") },
+                        confirmButton = {
+                            Button(onClick = {
+                                showBatteryOptimizationDialog = false
+                                requestBatteryOptimizationBypass()
+                            }) { Text("ALLOW") }
                         }
                     )
                 }
@@ -152,6 +171,24 @@ class MainActivity : ComponentActivity() {
             }
         } catch (e: Exception) {
             e.printStackTrace()
+        }
+    }
+
+    private fun checkBatteryOptimization(onNeedsBypass: () -> Unit) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val powerManager = getSystemService(POWER_SERVICE) as PowerManager
+            if (!powerManager.isIgnoringBatteryOptimizations(packageName)) {
+                onNeedsBypass()
+            }
+        }
+    }
+
+    private fun requestBatteryOptimizationBypass() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val intent = Intent(Settings.ACTION_REQUEST_IGNORE_BATTERY_OPTIMIZATIONS).apply {
+                data = Uri.parse("package:$packageName")
+            }
+            startActivity(intent)
         }
     }
 }
