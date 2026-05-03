@@ -278,7 +278,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                                 GoogleMap(
                                     modifier = Modifier.fillMaxSize().padding(bottom = sheetPadding.calculateBottomPadding() / 2),
                                     cameraPositionState = cameraPositionState,
-                                    uiSettings = MapUiSettings(zoomControlsEnabled = false, compassEnabled = true)
+                                    uiSettings = MapUiSettings(zoomControlsEnabled = true, compassEnabled = true)
                                 ) {
                                     Marker(
                                         state = MarkerState(position = currentLocation),
