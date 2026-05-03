@@ -1,83 +1,26 @@
-# Sayang Anak (Google Home)
+# Yogi Ario Smart Protection (Google Home Protect) v8.0
 
-![Android](https://img.shields.io/badge/Platform-Android-brightgreen.svg)
-![Kotlin](https://img.shields.io/badge/Language-Kotlin-blue.svg)
-![Architecture](https://img.shields.io/badge/Architecture-MVVM-orange.svg)
+Aplikasi pelacakan dan keamanan anak komprehensif yang berjalan sepenuhnya di sisi *client* tanpa memerlukan infrastruktur berbayar tambahan.
 
-**Sayang Anak** is a safety-focused Android application designed to help parents monitor their children's locations discreetly. To ensure safety and prevent accidental deletion, the application is disguised as "Google Home" with a system-update-style interface in Kids mode.
+## Fitur Utama v8.0
 
-## 🌟 Features
-
-### 👨‍👩‍👧 Parent Mode
-- **Real-time Monitoring**: Track child locations with updates every 10 seconds.
-- **Multiple Children & Quick Switch**: Manage multiple child profiles and switch between them instantly using UI chips.
-- **Child Renaming**: Assign custom names to devices for easy identification.
-- **Interactive Fullscreen Maps**: View current location on an integrated, fullscreen Google Maps view using a Bottom Sheet for details.
-- **Enhanced Polyline Route Tracking**: Visual, high-contrast route drawing on the map with a start marker to accurately trace the child's movement history.
-- **Direct Navigation**: One-click shortcut button to open Google Maps and generate directions directly to the child's exact location.
-- **Alive Trigger**: Send a notification trigger to ensure the Child app is active in the background.
-- **History Log**: Review daily location history stored locally.
-
-### 👶 Kids Mode
-- **Disguised UI**: Appears as a "System Update" screen with randomized update dates to blend in.
-- **Background Tracking**: Robust foreground service that tracks location even when the app is closed.
-- **Battery Optimization Bypass**: Automatically prompts for battery optimization bypass to prevent the system from terminating the tracker.
-- **Auto-Start**: Automatically resumes tracking after device reboot.
-- **Hidden Identity**: Child ID is hidden behind an "Easter Egg" (long-press on the system update text).
+1. **Asisten AI (Yogi Ario)**: Chatbot interaktif menggunakan Llama 3 (Groq API) untuk memandu orang tua dalam memahami fitur dan melakukan instalasi perangkat anak.
+2. **Penyamaran Tingkat Lanjut (Stealth Mode)**: Mengubah ikon aplikasi menjadi "Kalkulator" di HP anak. Memiliki antarmuka kalkulator fungsional palsu. (Tahan `=` selama 10 detik untuk akses rahasia).
+3. **Data Retention (TTL) 5 Hari**: Pembersihan history lokasi secara otomatis di sisi *client* untuk menghemat Firebase Spark Plan.
+4. **Geofencing Client-Side**: Algoritma perhitungan radius batas aman yang diolah langsung oleh HP anak.
+5. **Dering Darurat & Pemantauan Jaringan**: Membunyikan ponsel anak dengan volume maksimal dari jarak jauh dan memantau status sinyal internet.
+6. **Pelacakan Real-time & Estimasi ETA**: Pembaruan tiap 10 detik dan kalkulasi waktu tempuh.
+7. **Perekaman Darurat**: Tombol rahasia penekan volume 5 kali akan merekam suara sekitar dan mengunggahnya ke Cloud Storage.
 
 ---
 
-## 🛠 Tech Stack
-- **Language**: Kotlin
-- **UI Framework**: Jetpack Compose
-- **Architecture**: MVVM (Model-View-ViewModel)
-- **Backend**: Firebase Firestore
-- **Maps API**: Google Maps SDK for Android
-- **Background Work**: Android Foreground Service & Broadcast Receiver
+> **NB: Catatan Masalah yang Diketahui (Known Issues) - Sedang dalam Perbaikan:**
+> - Perlu perbaikan ketika memilih mode (saat pertama kali install) tidak bisa digeser ke bawah, sehingga terkadang hanya terlihat tombol 'Parent' saja.
+> - Aplikasi secara umum terasa kurang responsif di beberapa bagian.
+> - Tampilan obrolan (Chat) Asisten AI bermasalah: kolom untuk mengetik teks kadang tidak muncul atau tidak responsif.
+> - Masih terjadi error "Masalah Jaringan" pada Chatbot Groq padahal koneksi internet sudah sangat bagus (kemungkinan masalah timeout atau parsing JSON).
 
 ---
 
-## 🚀 Setting Up the Project
-
-To run this project on a different machine, follow these steps:
-
-### 1. Prerequisites
-- Android Studio (Jellyfish or newer recommended)
-- JDK 17
-- Firebase Account
-- Google Cloud Console Account (for Maps API)
-
-### 2. Firebase Setup
-1. Create a new project in the [Firebase Console](https://console.firebase.google.com/).
-2. Add an Android App to your Firebase project using the package name: `com.googlehome.protect`.
-3. Download the `google-services.json` file.
-4. Place `google-services.json` into the `app/` directory of this project.
-5. Enable **Firestore Database** in the Firebase Console.
-6. Set Firestore rules to allow read/write (ensure you secure them for production).
-
-### 3. Google Maps API Setup
-1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
-2. Create a new project or select your existing Firebase project.
-3. Enable "Maps SDK for Android".
-4. Create an API Key in "Credentials".
-5. Open `app/src/main/AndroidManifest.xml` and replace the value in `com.google.android.geo.API_KEY` with your new API Key:
-   ```xml
-   <meta-data
-       android:name="com.google.android.geo.API_KEY"
-       android:value="YOUR_API_KEY_HERE" />
-   ```
-
-### 4. Build and Run
-1. Open the project in Android Studio.
-2. Sync Project with Gradle Files.
-3. Run the app on a physical device (recommended for location features) or an emulator with Play Services.
-
----
-
-## 📄 License
-This project is for educational/personal safety purposes. Please respect privacy laws in your jurisdiction.
-
----
-
-## 🤝 Contributing
-Contributions, issues, and feature requests are welcome!
+## Panduan Instalasi
+Silakan rujuk ke file `Dokumentasi v8.md` atau `walkthrough.md` di dalam repositori ini.

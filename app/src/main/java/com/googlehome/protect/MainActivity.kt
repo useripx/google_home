@@ -22,6 +22,7 @@ import androidx.core.content.ContextCompat
 import com.googlehome.protect.data.ModeManager
 import com.googlehome.protect.data.repository.FirebaseRepository
 import com.googlehome.protect.model.AppMode
+import com.google.firebase.auth.FirebaseAuth
 import com.googlehome.protect.service.LocationService
 import com.googlehome.protect.ui.MainViewModel
 import com.googlehome.protect.ui.kids.KidsDisguiseScreen
@@ -29,6 +30,10 @@ import com.googlehome.protect.ui.parent.ParentDashboard
 import com.googlehome.protect.ui.parent.ParentViewModel
 import com.googlehome.protect.ui.setup.SetupScreen
 import com.googlehome.protect.ui.theme.GoogleHomeTheme
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.delay
 
 class MainActivity : ComponentActivity() {
     
@@ -37,6 +42,14 @@ class MainActivity : ComponentActivity() {
     
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        
+        // Initialize Firebase Anonymous Authentication to satisfy secure Firestore Rules
+        val auth = FirebaseAuth.getInstance()
+        if (auth.currentUser == null) {
+            auth.signInAnonymously().addOnFailureListener { e ->
+                e.printStackTrace()
+            }
+        }
         
         modeManager = ModeManager(this)
         mainViewModel = MainViewModel(modeManager)
@@ -138,7 +151,9 @@ class MainActivity : ComponentActivity() {
     private fun requestInitialPermissions(launcher: ManagedActivityResultLauncher<Array<String>, Map<String, Boolean>>) {
         val permissions = mutableListOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
+            Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.READ_PHONE_STATE
         )
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             permissions.add(Manifest.permission.POST_NOTIFICATIONS)
@@ -148,10 +163,12 @@ class MainActivity : ComponentActivity() {
 
     private fun hasRequiredPermissions(): Boolean {
         val foreground = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+        val audio = ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED
+        val phoneState = ContextCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED
         val notifications = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED
         } else true
-        return foreground && notifications
+        return foreground && notifications && audio && phoneState
     }
 
     private fun openAppSettings() {
@@ -189,6 +206,56 @@ class MainActivity : ComponentActivity() {
                 data = Uri.parse("package:$packageName")
             }
             startActivity(intent)
+        }
+    }
+    private var volumePressCount = 0
+    private var lastPressTime = 0L
+    private var isEmergencyActive = false
+
+    override fun onKeyDown(keyCode: Int, event: android.view.KeyEvent?): Boolean {
+        if (keyCode == android.view.KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == android.view.KeyEvent.KEYCODE_VOLUME_UP) {
+            lifecycleScope.launch {
+                if (modeManager.appMode.first() == com.googlehome.protect.model.AppMode.KIDS) {
+                    val currentTime = System.currentTimeMillis()
+                    if (currentTime - lastPressTime < 1500) {
+                        volumePressCount++
+                    } else {
+                        volumePressCount = 1
+                    }
+                    lastPressTime = currentTime
+
+                    if (volumePressCount >= 5 && !isEmergencyActive) {
+                        triggerEmergency()
+                        volumePressCount = 0
+                    }
+                }
+            }
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
+    private fun triggerEmergency() {
+        if (isEmergencyActive) return
+        isEmergencyActive = true
+        
+        val recorder = com.googlehome.protect.util.EmergencyRecorder(this)
+        val repository = FirebaseRepository()
+        
+        lifecycleScope.launch {
+            val childId = modeManager.childId.first() ?: return@launch
+            repository.triggerEmergency(childId, true)
+            
+            val audioFile = recorder.startRecording()
+            delay(30000) // Record for 30 seconds
+            recorder.stopRecording()
+            
+            audioFile?.let {
+                repository.uploadEmergencyAudio(childId, it)
+                it.delete()
+            }
+            
+            repository.triggerEmergency(childId, false)
+            isEmergencyActive = false
         }
     }
 }

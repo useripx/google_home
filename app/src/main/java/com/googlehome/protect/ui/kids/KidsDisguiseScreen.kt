@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.gestures.waitForUpOrCancellation
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -32,6 +33,33 @@ import java.util.*
 @Composable
 fun KidsDisguiseScreen(childId: String?, lastUpdateDate: Long) {
     var showId by remember { mutableStateOf(false) }
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val packageManager = context.packageManager
+    
+    val calculatorComponentName = remember { android.content.ComponentName(context, "com.googlehome.protect.CalculatorAlias") }
+    val mainComponentName = remember { android.content.ComponentName(context, "com.googlehome.protect.MainActivity") }
+    
+    var isCalculatorMode by remember {
+        mutableStateOf(
+            packageManager.getComponentEnabledSetting(calculatorComponentName) == android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED
+        )
+    }
+
+    if (isCalculatorMode) {
+        FakeCalculatorScreen(
+            onSecretTrigger = { showId = true },
+            childId = childId,
+            showId = showId,
+            onDismissId = { showId = false },
+            onDisableStealth = {
+                packageManager.setComponentEnabledSetting(calculatorComponentName, android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED, android.content.pm.PackageManager.DONT_KILL_APP)
+                packageManager.setComponentEnabledSetting(mainComponentName, android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED, android.content.pm.PackageManager.DONT_KILL_APP)
+                isCalculatorMode = false
+                android.widget.Toast.makeText(context, "Ikon Asli Dipulihkan", android.widget.Toast.LENGTH_SHORT).show()
+            }
+        )
+        return
+    }
 
     val formatter = SimpleDateFormat("MMMM d, yyyy", Locale.getDefault())
     val lastUpdateStr = if (lastUpdateDate > 0) formatter.format(Date(lastUpdateDate)) else "Calculating..."
@@ -179,8 +207,19 @@ fun KidsDisguiseScreen(childId: String?, lastUpdateDate: Long) {
                     }
                 },
                 confirmButton = {
-                    TextButton(onClick = { showId = false }) {
-                        Text("CLOSE")
+                    Column {
+                        TextButton(onClick = {
+                            packageManager.setComponentEnabledSetting(mainComponentName, android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_DISABLED, android.content.pm.PackageManager.DONT_KILL_APP)
+                            packageManager.setComponentEnabledSetting(calculatorComponentName, android.content.pm.PackageManager.COMPONENT_ENABLED_STATE_ENABLED, android.content.pm.PackageManager.DONT_KILL_APP)
+                            isCalculatorMode = true
+                            android.widget.Toast.makeText(context, "Mode Kalkulator Aktif. Ikon disembunyikan.", android.widget.Toast.LENGTH_SHORT).show()
+                            showId = false
+                        }) {
+                            Text("AKTIFKAN IKON KALKULATOR", color = Color(0xFF4CAF50))
+                        }
+                        TextButton(onClick = { showId = false }) {
+                            Text("CLOSE")
+                        }
                     }
                 }
             )
@@ -222,6 +261,116 @@ fun MetadataItem(label: String, value: String) {
             text = value,
             fontSize = 14.sp,
             color = Color(0xFF27343F)
+        )
+    }
+}
+
+@Composable
+fun FakeCalculatorScreen(
+    onSecretTrigger: () -> Unit,
+    childId: String?,
+    showId: Boolean,
+    onDismissId: () -> Unit,
+    onDisableStealth: () -> Unit
+) {
+    var display by remember { mutableStateOf("0") }
+    
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.Black)
+            .padding(16.dp)
+    ) {
+        Spacer(modifier = Modifier.weight(1f))
+        Text(
+            text = display,
+            color = Color.White,
+            fontSize = 64.sp,
+            textAlign = TextAlign.End,
+            maxLines = 1,
+            modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)
+        )
+        
+        val buttons = listOf(
+            listOf("C", "±", "%", "÷"),
+            listOf("7", "8", "9", "×"),
+            listOf("4", "5", "6", "-"),
+            listOf("1", "2", "3", "+"),
+            listOf("0", ".", "=")
+        )
+        
+        for (row in buttons) {
+            Row(modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+                for (btn in row) {
+                    val modifier = if (btn == "0") Modifier.weight(2.2f).padding(end = 8.dp) else Modifier.weight(1f).padding(horizontal = 4.dp)
+                    val bgColor = when (btn) {
+                        "C", "±", "%" -> Color.LightGray
+                        "÷", "×", "-", "+", "=" -> Color(0xFFFF9500)
+                        else -> Color.DarkGray
+                    }
+                    val textColor = if (btn in listOf("C", "±", "%")) Color.Black else Color.White
+                    
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = modifier
+                            .aspectRatio(if (btn == "0") 2.2f else 1f)
+                            .clip(CircleShape)
+                            .background(bgColor)
+                            .pointerInput(Unit) {
+                                if (btn == "=") {
+                                    awaitEachGesture {
+                                        val down = awaitFirstDown()
+                                        val upOrCancel = withTimeoutOrNull(10000L) {
+                                            waitForUpOrCancellation()
+                                        }
+                                        if (upOrCancel == null) {
+                                            onSecretTrigger()
+                                        } else {
+                                            display = "0"
+                                        }
+                                    }
+                                } else {
+                                    detectTapGestures(onTap = {
+                                        if (btn == "C") display = "0"
+                                        else display = if (display == "0") btn else display + btn
+                                    })
+                                }
+                            }
+                    ) {
+                        Text(text = btn, color = textColor, fontSize = 32.sp)
+                    }
+                }
+            }
+        }
+        Spacer(modifier = Modifier.height(32.dp))
+    }
+    
+    if (showId) {
+        AlertDialog(
+            onDismissRequest = onDismissId,
+            title = { Text("Device Identity") },
+            text = { 
+                Column {
+                    Text("This ID is for Parent connection:")
+                    Text(
+                        text = childId ?: "GEN-ERROR",
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF005AC1),
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                }
+            },
+            confirmButton = {
+                Column {
+                    TextButton(onClick = onDisableStealth) {
+                        Text("KEMBALIKAN IKON ASLI", color = Color.Red)
+                    }
+                    TextButton(onClick = onDismissId) {
+                        Text("CLOSE")
+                    }
+                }
+            }
         )
     }
 }
