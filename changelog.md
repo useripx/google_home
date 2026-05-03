@@ -6,6 +6,7 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 - **Direct Maps Navigation**: Added a shortcut button in the Parent Dashboard to open the Google Maps app and instantly start navigating to the child's exact coordinates. Includes a web-browser fallback if the app is missing.
+- **Map Zoom Controls**: Enabled native zoom in/out controls on the parent's map view for easier navigation.
 
 ### Changed
 - **Enhanced Polyline UI/UX**: Improved the route history drawing by changing the line color to bright red, increasing thickness, and adding a green start marker.
