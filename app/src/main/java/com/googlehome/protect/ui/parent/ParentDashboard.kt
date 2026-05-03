@@ -71,29 +71,6 @@ fun ParentDashboard(viewModel: ParentViewModel) {
         Scaffold(
             topBar = {
                 Column {
-                    // Tracking Status Bar
-                    Surface(
-                        color = Color(0xFF1A73E8),
-                        contentColor = Color.White,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Row(
-                            modifier = Modifier.padding(horizontal = 24.dp, vertical = 8.dp),
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Box(
-                                modifier = Modifier
-                                    .size(8.dp)
-                                    .background(Color(0xFF89FA9B), CircleShape)
-                            )
-                            Spacer(modifier = Modifier.width(8.dp))
-                            Text(
-                                text = "Tracking Active - Real-time updates every 10s",
-                                fontSize = 12.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        }
-                    }
                     CenterAlignedTopAppBar(
                         title = { 
                             Text(
@@ -111,16 +88,43 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                             IconButton(onClick = { showAddChildDialog = true }) {
                                 Icon(Icons.Default.Add, contentDescription = "Add Child")
                             }
-                        }
+                        },
+                        // We use WindowInsets.None because the Column handles the status bar or the Scaffold does.
+                        // Actually, if we want Google Home at the very top, we should handle insets here or in the Column.
+                        windowInsets = TopAppBarDefaults.windowInsets
                     )
 
-                    // Row 2: Scrollable Chips (Moved up from map)
+                    // Row 2: Tracking Status Bar (Pindah ke bawah header)
+                    Surface(
+                        color = Color(0xFF1A73E8),
+                        contentColor = Color.White,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Row(
+                            modifier = Modifier.padding(horizontal = 24.dp, vertical = 6.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(6.dp)
+                                    .background(Color(0xFF89FA9B), CircleShape)
+                            )
+                            Spacer(modifier = Modifier.width(8.dp))
+                            Text(
+                                text = "Tracking Active - Real-time updates every 10s",
+                                fontSize = 11.sp,
+                                fontWeight = FontWeight.Medium
+                            )
+                        }
+                    }
+
+                    // Row 3: Scrollable Chips
                     if (trackedChildrenIds.isNotEmpty()) {
                         LazyRow(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .background(Color.White)
-                                .padding(bottom = 8.dp),
+                                .padding(vertical = 4.dp),
                             contentPadding = PaddingValues(horizontal = 16.dp)
                         ) {
                             items(trackedChildrenIds.toList()) { id ->
