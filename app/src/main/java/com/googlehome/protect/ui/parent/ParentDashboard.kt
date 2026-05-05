@@ -26,7 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
-import com.google.maps.android.compose.HeatMap
+import com.google.maps.android.compose.Heatmap
 import com.googlehome.protect.model.Child
 import com.googlehome.protect.model.LocationEntry
 import java.text.SimpleDateFormat
@@ -415,7 +415,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                                         )
                                         
                                         // Heatmap Layer (v9.0)
-                                        HeatMap(
+                                        Heatmap(
                                             data = historyPoints,
                                             radius = 50,
                                             opacity = 0.7f
