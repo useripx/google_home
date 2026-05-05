@@ -23,6 +23,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.googlehome.protect.api.GroqApiClient
 import kotlinx.coroutines.launch
+import androidx.compose.animation.core.*
 
 class AssistantViewModel : ViewModel() {
     private val groqClient = GroqApiClient()
@@ -140,14 +141,14 @@ fun AssistantChatScreen(modifier: Modifier = Modifier, viewModel: AssistantViewM
         }
 
         if (viewModel.isLoading) {
-            val infiniteTransition = androidx.compose.animation.core.rememberInfiniteTransition()
+            val infiniteTransition = rememberInfiniteTransition()
             val dotCount by infiniteTransition.animateValue(
                 initialValue = 0,
                 targetValue = 4,
-                typeConverter = androidx.compose.animation.core.Int.VectorConverter,
-                animationSpec = androidx.compose.animation.core.infiniteRepeatable(
-                    animation = androidx.compose.animation.core.tween(1200, easing = androidx.compose.animation.core.LinearEasing),
-                    repeatMode = androidx.compose.animation.core.RepeatMode.Restart
+                typeConverter = Int.VectorConverter,
+                animationSpec = infiniteRepeatable(
+                    animation = tween(1200, easing = LinearEasing),
+                    repeatMode = RepeatMode.Restart
                 )
             )
             
