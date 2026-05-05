@@ -168,7 +168,7 @@ fun AssistantChatScreen(modifier: Modifier = Modifier, viewModel: AssistantViewM
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.Bottom
         ) {
             OutlinedTextField(
                 value = inputText,
@@ -196,7 +196,7 @@ fun AssistantChatScreen(modifier: Modifier = Modifier, viewModel: AssistantViewM
                         modifier = Modifier.size(20.dp)
                     )
                 }
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(16.dp))
                 FloatingActionButton(
                     onClick = {
                         viewModel.sendMessage(inputText)
