@@ -17,7 +17,7 @@ android {
         minSdk = 24
         targetSdk = 36
         versionCode = 1
-        versionName = "8.0"
+        versionName = "9.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.play.services.maps)
     implementation(libs.play.services.location)
     implementation(libs.maps.compose)
+    implementation(libs.maps.compose.utils)
 
     // Navigation & ViewModel
     implementation(libs.androidx.navigation.compose)

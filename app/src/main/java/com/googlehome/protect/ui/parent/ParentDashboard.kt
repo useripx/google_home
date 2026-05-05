@@ -26,6 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import com.google.maps.android.heatmaps.HeatmapTileProvider
 import com.googlehome.protect.model.Child
 import com.googlehome.protect.model.LocationEntry
 import java.text.SimpleDateFormat
@@ -108,9 +109,10 @@ fun ParentDashboard(viewModel: ParentViewModel) {
 
     ModalNavigationDrawer(
         drawerState = drawerState,
+        gesturesEnabled = selectedTab != 0,
         drawerContent = {
             ModalDrawerSheet {
-                Text("Yogi Ario Protection v8.0", modifier = Modifier.padding(16.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text("Yogi Ario Protection v9.0", modifier = Modifier.padding(16.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 HorizontalDivider()
                 NavigationDrawerItem(
                     label = { Text("Profile") },
@@ -181,7 +183,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                         LazyRow(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .background(Color.White)
+                                .background(MaterialTheme.colorScheme.surface)
                                 .padding(vertical = 4.dp),
                             contentPadding = PaddingValues(horizontal = 16.dp)
                         ) {
@@ -211,7 +213,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                 }
             },
             bottomBar = {
-                NavigationBar(containerColor = Color.White) {
+                NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
                     NavigationBarItem(
                         selected = selectedTab == 0,
                         onClick = { selectedTab = 0 },
@@ -293,7 +295,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                             modifier = Modifier.padding(innerPadding).fillMaxSize(),
                             scaffoldState = scaffoldState,
                             sheetPeekHeight = 140.dp,
-                            sheetContainerColor = Color.White,
+                            sheetContainerColor = MaterialTheme.colorScheme.surface,
                             sheetContent = {
                                 Column(modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp)) {
                                     // Status Card
@@ -411,6 +413,17 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                                             geodesic = true,
                                             zIndex = 1f
                                         )
+                                        
+                                        // Heatmap Layer (v9.0)
+                                        val heatmapTileProvider = remember(historyPoints) {
+                                            HeatmapTileProvider.Builder()
+                                                .data(historyPoints)
+                                                .radius(50)
+                                                .opacity(0.7)
+                                                .build()
+                                        }
+                                        TileOverlay(tileProvider = heatmapTileProvider)
+
                                         // Marker untuk titik awal rute
                                         Marker(
                                             state = MarkerState(position = historyPoints.first()),
@@ -457,8 +470,8 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                     }
                 }
                 1 -> {
-                    // ASISTEN AI SCREEN (v8.0)
-                    AssistantChatScreen()
+                    // ASISTEN AI SCREEN (v9.0)
+                    AssistantChatScreen(modifier = Modifier.padding(innerPadding))
                 }
                 2 -> {
                     // SETTINGS SCREEN v3.0
@@ -469,12 +482,12 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                         item {
                             Card(
                                 modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color(0xFFE8F0FE))
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
                             ) {
                                 Column(modifier = Modifier.padding(16.dp)) {
-                                    Text("ID Orang Tua (Parent ID)", fontSize = 12.sp, color = Color(0xFF1A73E8))
+                                    Text("ID Orang Tua (Parent ID)", fontSize = 12.sp, color = MaterialTheme.colorScheme.primary)
                                     Text(parentId ?: "Generating...", fontWeight = FontWeight.ExtraBold, fontSize = 20.sp, letterSpacing = 2.sp)
-                                    Text("Gunakan ID ini untuk menautkan perangkat anak.", fontSize = 11.sp, color = Color.Gray)
+                                    Text("Gunakan ID ini untuk menautkan perangkat anak.", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                 }
                             }
 
@@ -484,8 +497,8 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                         items(trackedChildrenIds.toList()) { id ->
                             Card(
                                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color.White),
-                                border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFEEEEEE))
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                                border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                             ) {
                                 Row(
                                     modifier = Modifier.padding(16.dp),
@@ -559,7 +572,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                             
                             Card(
                                 modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp),
-                                colors = CardDefaults.cardColors(containerColor = Color(0xFFF1F3F4))
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
                             ) {
                                 Column(modifier = Modifier.padding(16.dp)) {
                                     Text(
@@ -620,8 +633,8 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                             Text("Pengaturan Keamanan", fontWeight = FontWeight.Bold, fontSize = 14.sp, color = Color(0xFF1A73E8), modifier = Modifier.padding(vertical = 8.dp))
                             Card(
                                 modifier = Modifier.fillMaxWidth(),
-                                colors = CardDefaults.cardColors(containerColor = Color.White),
-                                border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFEEEEEE))
+                                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                                border = androidx.compose.foundation.BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant)
                             ) {
                                 Column(modifier = Modifier.padding(16.dp)) {
                                     Text("Batas Aman (Geofencing)", fontWeight = FontWeight.Bold)
@@ -631,7 +644,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                             
                             Spacer(Modifier.height(32.dp))
                             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
-                                Text("Yogi Ario Protection v8.0", color = Color.Gray, fontSize = 12.sp)
+                                Text("Yogi Ario Protection v9.0", color = Color.Gray, fontSize = 12.sp)
                                 Text("Status Firebase: Connected", color = Color(0xFF4CAF50), fontSize = 11.sp)
                             }
                         }

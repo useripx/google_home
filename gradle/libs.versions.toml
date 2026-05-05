@@ -47,6 +47,7 @@ firebase-storage = { group = "com.google.firebase", name = "firebase-storage-ktx
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "googleMaps" }
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "googleLocation" }
 maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "mapsCompose" }
+maps-compose-utils = { group = "com.google.maps.android", name = "maps-compose-utils", version.ref = "mapsCompose" }
 
 # Navigation & Lifecycle
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }

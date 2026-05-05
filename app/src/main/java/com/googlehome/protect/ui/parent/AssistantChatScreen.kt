@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Send
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,6 +24,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.googlehome.protect.api.GroqApiClient
 import kotlinx.coroutines.launch
+import androidx.compose.animation.core.*
 
 class AssistantViewModel : ViewModel() {
     private val groqClient = GroqApiClient()
@@ -56,15 +58,21 @@ class AssistantViewModel : ViewModel() {
             }
 
             val response = groqClient.sendMessage(text, historyPairs)
+            kotlinx.coroutines.delay(5000) // Jeda 5 detik agar lebih manusiawi
             messages.add("assistant" to response)
             isLoading = false
         }
+    }
+
+    fun clearChat() {
+        messages.clear()
+        messages.add("assistant" to "Hai, saya Yogi Ario Assisten AI aplikasi smart Protection ada yang bisa dibantu hari ini?")
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AssistantChatScreen(viewModel: AssistantViewModel = viewModel()) {
+fun AssistantChatScreen(modifier: Modifier = Modifier, viewModel: AssistantViewModel = viewModel()) {
     var inputText by remember { mutableStateOf("") }
     
     val templates = listOf(
@@ -74,7 +82,7 @@ fun AssistantChatScreen(viewModel: AssistantViewModel = viewModel()) {
         "Bagaimana Cara Install Mode Anak beserta cara settingnya?"
     )
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         // Chat Messages
         LazyColumn(
             modifier = Modifier.weight(1f).fillMaxWidth(),
@@ -96,12 +104,12 @@ fun AssistantChatScreen(viewModel: AssistantViewModel = viewModel()) {
                                 bottomStart = if (isUser) 16.dp else 4.dp, 
                                 bottomEnd = if (isUser) 4.dp else 16.dp
                             ))
-                            .background(if (isUser) Color(0xFF005AC1) else Color(0xFFE8F0FE))
+                            .background(if (isUser) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant)
                             .padding(12.dp)
                     ) {
                         Text(
                             text = msg.second,
-                            color = if (isUser) Color.White else Color.Black,
+                            color = if (isUser) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 15.sp
                         )
                     }
@@ -109,7 +117,50 @@ fun AssistantChatScreen(viewModel: AssistantViewModel = viewModel()) {
             }
         }
 
-        // Templates
+
+        if (viewModel.isLoading) {
+            val infiniteTransition = rememberInfiniteTransition()
+            val dotCount by infiniteTransition.animateValue(
+                initialValue = 0,
+                targetValue = 4,
+                typeConverter = Int.VectorConverter,
+                animationSpec = infiniteRepeatable(
+                    animation = tween(1200, easing = LinearEasing),
+                    repeatMode = RepeatMode.Restart
+                )
+            )
+            
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = MaterialTheme.colorScheme.primary)
+                Spacer(Modifier.width(8.dp))
+                Text("Yogi Ario sedang mengetik" + ".".repeat(dotCount), fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
+            }
+        }
+
+        // 1. Tombol + (Posisi Biru - Paling Atas Kanan)
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
+            IconButton(
+                onClick = { viewModel.clearChat() },
+                modifier = Modifier
+                    .size(36.dp)
+                    .background(MaterialTheme.colorScheme.secondaryContainer, CircleShape)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "New Chat",
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+
+        // 2. Templates (Posisi Putih - Di Tengah)
         if (viewModel.messages.size < 3) {
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
@@ -119,32 +170,21 @@ fun AssistantChatScreen(viewModel: AssistantViewModel = viewModel()) {
                     Surface(
                         modifier = Modifier.padding(end = 8.dp),
                         shape = RoundedCornerShape(16.dp),
-                        color = Color(0xFFEFF4FC),
+                        color = MaterialTheme.colorScheme.secondaryContainer,
                         onClick = { viewModel.sendMessage(template) }
                     ) {
                         Text(
                             text = template,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                             fontSize = 12.sp,
-                            color = Color(0xFF005AC1)
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                     }
                 }
             }
         }
 
-        if (viewModel.isLoading) {
-            Row(
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp)
-                Spacer(Modifier.width(8.dp))
-                Text("Yogi Ario sedang mengetik...", fontSize = 12.sp, color = Color.Gray)
-            }
-        }
-
-        // Input Area
+        // 3. Input Area (Posisi Hijau - Paling Bawah)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -158,8 +198,8 @@ fun AssistantChatScreen(viewModel: AssistantViewModel = viewModel()) {
                 placeholder = { Text("Tanya Yogi Ario...") },
                 shape = RoundedCornerShape(24.dp),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    unfocusedBorderColor = Color.LightGray,
-                    focusedBorderColor = Color(0xFF005AC1)
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                    focusedBorderColor = MaterialTheme.colorScheme.primary
                 )
             )
             Spacer(Modifier.width(8.dp))
@@ -168,8 +208,8 @@ fun AssistantChatScreen(viewModel: AssistantViewModel = viewModel()) {
                     viewModel.sendMessage(inputText)
                     inputText = ""
                 },
-                containerColor = Color(0xFF005AC1),
-                contentColor = Color.White,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
                 shape = CircleShape,
                 modifier = Modifier.size(48.dp)
             ) {
