@@ -26,6 +26,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.compose.*
+import com.google.maps.android.compose.HeatMap
 import com.googlehome.protect.model.Child
 import com.googlehome.protect.model.LocationEntry
 import java.text.SimpleDateFormat
@@ -111,7 +112,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
         gesturesEnabled = selectedTab != 0,
         drawerContent = {
             ModalDrawerSheet {
-                Text("Yogi Ario Protection v8.0", modifier = Modifier.padding(16.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text("Yogi Ario Protection v9.0", modifier = Modifier.padding(16.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 HorizontalDivider()
                 NavigationDrawerItem(
                     label = { Text("Profile") },
@@ -412,6 +413,14 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                                             geodesic = true,
                                             zIndex = 1f
                                         )
+                                        
+                                        // Heatmap Layer (v9.0)
+                                        HeatMap(
+                                            data = historyPoints,
+                                            radius = 50,
+                                            opacity = 0.7f
+                                        )
+
                                         // Marker untuk titik awal rute
                                         Marker(
                                             state = MarkerState(position = historyPoints.first()),
@@ -458,7 +467,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                     }
                 }
                 1 -> {
-                    // ASISTEN AI SCREEN (v8.0)
+                    // ASISTEN AI SCREEN (v9.0)
                     AssistantChatScreen(modifier = Modifier.padding(innerPadding))
                 }
                 2 -> {
@@ -632,7 +641,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                             
                             Spacer(Modifier.height(32.dp))
                             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
-                                Text("Yogi Ario Protection v8.0", color = Color.Gray, fontSize = 12.sp)
+                                Text("Yogi Ario Protection v9.0", color = Color.Gray, fontSize = 12.sp)
                                 Text("Status Firebase: Connected", color = Color(0xFF4CAF50), fontSize = 11.sp)
                             }
                         }

@@ -56,6 +56,7 @@ class AssistantViewModel : ViewModel() {
             }
 
             val response = groqClient.sendMessage(text, historyPairs)
+            kotlinx.coroutines.delay(5000) // Jeda 5 detik agar lebih manusiawi
             messages.add("assistant" to response)
             isLoading = false
         }
@@ -139,13 +140,24 @@ fun AssistantChatScreen(modifier: Modifier = Modifier, viewModel: AssistantViewM
         }
 
         if (viewModel.isLoading) {
+            val infiniteTransition = androidx.compose.animation.core.rememberInfiniteTransition()
+            val dotCount by infiniteTransition.animateValue(
+                initialValue = 0,
+                targetValue = 4,
+                typeConverter = androidx.compose.animation.core.Int.VectorConverter,
+                animationSpec = androidx.compose.animation.core.infiniteRepeatable(
+                    animation = androidx.compose.animation.core.tween(1200, easing = androidx.compose.animation.core.LinearEasing),
+                    repeatMode = androidx.compose.animation.core.RepeatMode.Restart
+                )
+            )
+            
             Row(
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = MaterialTheme.colorScheme.primary)
                 Spacer(Modifier.width(8.dp))
-                Text("Yogi Ario sedang mengetik...", fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
+                Text("Yogi Ario sedang mengetik" + ".".repeat(dotCount), fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
             }
         }
 

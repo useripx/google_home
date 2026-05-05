@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [9.0.0] - 2026-05-05
+
+### Fitur Baru & Peningkatan UX
+- **Heatmap History**: Menambahkan lapisan Heatmap pada peta untuk melihat intensitas kunjungan lokasi anak secara visual.
+- **Interaksi AI Manusiawi**: Menambahkan jeda respon 5 detik pada Asisten AI untuk simulasi proses berpikir.
+- **Typing Animation**: Implementasi animasi titik-titik bergerak ("Yogi Ario sedang mengetik....") pada chat assistant.
+- **Global Upgrade v9.0**: Memperbarui identitas versi di seluruh aplikasi dan dokumentasi.
+
+### Dokumentasi
+- Mengupdate `README.md` dan `ringkasandanfitur.md`.
+- Memperbarui dokumentasi teknis mendalam ke file `Dokumentasi v9.md`.
+
 ## [8.1.0] - 2026-05-05
 
 ### Perbaikan UI & UX Dashboard
