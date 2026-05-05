@@ -117,29 +117,6 @@ fun AssistantChatScreen(modifier: Modifier = Modifier, viewModel: AssistantViewM
             }
         }
 
-        // Templates
-        if (viewModel.messages.size < 3) {
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
-            ) {
-                items(templates) { template ->
-                    Surface(
-                        modifier = Modifier.padding(end = 8.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        color = MaterialTheme.colorScheme.secondaryContainer,
-                        onClick = { viewModel.sendMessage(template) }
-                    ) {
-                        Text(
-                            text = template,
-                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.onSecondaryContainer
-                        )
-                    }
-                }
-            }
-        }
 
         if (viewModel.isLoading) {
             val infiniteTransition = rememberInfiniteTransition()
@@ -208,6 +185,30 @@ fun AssistantChatScreen(modifier: Modifier = Modifier, viewModel: AssistantViewM
                     modifier = Modifier.size(48.dp)
                 ) {
                     Icon(Icons.Default.Send, contentDescription = "Send", modifier = Modifier.size(20.dp))
+                }
+            }
+        }
+
+        // Templates (Pindah ke bawah v9.0)
+        if (viewModel.messages.size < 3) {
+            LazyRow(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                items(templates) { template ->
+                    Surface(
+                        modifier = Modifier.padding(end = 8.dp),
+                        shape = RoundedCornerShape(16.dp),
+                        color = MaterialTheme.colorScheme.secondaryContainer,
+                        onClick = { viewModel.sendMessage(template) }
+                    ) {
+                        Text(
+                            text = template,
+                            modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
+                        )
+                    }
                 }
             }
         }
