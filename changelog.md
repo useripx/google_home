@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 - **Optimasi Gesture Peta**: Menonaktifkan swipe gesture untuk menu drawer saat berada di tab *Devices* (Map). Pengguna kini dapat berinteraksi dengan peta tanpa terganggu menu yang terbuka tidak sengaja.
 - **Responsivitas Asisten AI**: Memperbaiki tata letak layar *Assistant Chat* agar kotak input teks tidak tertutup oleh bar navigasi bawah.
 - **Konsistensi Dark Mode**: Menyelaraskan tema warna pada menu *Settings* dan elemen UI lainnya. Menghilangkan latar belakang putih yang tidak sinkron saat mode gelap aktif.
+- **Fitur Percakapan Baru**: Menambahkan tombol "+" di layar asisten AI untuk memudahkan pengguna membersihkan riwayat chat dan memulai sesi baru.
 
 ### Pembaruan AI (Groq)
 - **Model Upgrade**: Memperbarui model AI ke `llama-3.1-8b-instant` untuk stabilitas dan kecepatan respons yang lebih baik.

@@ -60,6 +60,11 @@ class AssistantViewModel : ViewModel() {
             isLoading = false
         }
     }
+
+    fun clearChat() {
+        messages.clear()
+        messages.add("assistant" to "Hai, saya Yogi Ario Assisten AI aplikasi smart Protection ada yang bisa dibantu hari ini?")
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -163,17 +168,33 @@ fun AssistantChatScreen(modifier: Modifier = Modifier, viewModel: AssistantViewM
                 )
             )
             Spacer(Modifier.width(8.dp))
-            FloatingActionButton(
-                onClick = {
-                    viewModel.sendMessage(inputText)
-                    inputText = ""
-                },
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
-                shape = CircleShape,
-                modifier = Modifier.size(48.dp)
-            ) {
-                Icon(Icons.Default.Send, contentDescription = "Send", modifier = Modifier.size(20.dp))
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                IconButton(
+                    onClick = { viewModel.clearChat() },
+                    modifier = Modifier
+                        .size(32.dp)
+                        .background(MaterialTheme.colorScheme.secondaryContainer, CircleShape)
+                ) {
+                    Icon(
+                        imageVector = androidx.compose.material.icons.Icons.Default.Add,
+                        contentDescription = "New Chat",
+                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+                Spacer(Modifier.height(8.dp))
+                FloatingActionButton(
+                    onClick = {
+                        viewModel.sendMessage(inputText)
+                        inputText = ""
+                    },
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary,
+                    shape = CircleShape,
+                    modifier = Modifier.size(48.dp)
+                ) {
+                    Icon(Icons.Default.Send, contentDescription = "Send", modifier = Modifier.size(20.dp))
+                }
             }
         }
     }

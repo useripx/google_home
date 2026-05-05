@@ -8,7 +8,7 @@ Aplikasi pelacakan dan keamanan anak komprehensif yang berjalan sepenuhnya di si
 
 ## 🚀 Fitur Utama v8.1
 
-1.  **Asisten AI (Yogi Ario)**: Chatbot interaktif menggunakan **Llama 3.1 (Groq API)** untuk memandu orang tua dalam memahami fitur dan melakukan instalasi perangkat anak. Kini lebih responsif dan stabil.
+1.  **Asisten AI (Yogi Ario)**: Chatbot interaktif menggunakan **Llama 3.1 (Groq API)** untuk memandu orang tua dalam memahami fitur dan melakukan instalasi perangkat anak. Kini lebih responsif, stabil, dan dilengkapi fitur **Percakapan Baru (+)**.
 2.  **Penyamaran Tingkat Lanjut (Stealth Mode)**: Mengubah ikon aplikasi menjadi "Kalkulator" di HP anak dengan antarmuka kalkulator fungsional. (Tahan `=` selama 10 detik untuk akses rahasia).
 3.  **Data Retention (TTL) 5 Hari**: Pembersihan history lokasi secara otomatis di sisi *client* untuk menghemat Firebase Spark Plan.
 4.  **Geofencing Client-Side**: Algoritma perhitungan radius batas aman yang diolah langsung oleh HP anak.
