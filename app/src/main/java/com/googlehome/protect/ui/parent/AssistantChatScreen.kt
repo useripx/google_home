@@ -64,7 +64,7 @@ class AssistantViewModel : ViewModel() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AssistantChatScreen(viewModel: AssistantViewModel = viewModel()) {
+fun AssistantChatScreen(modifier: Modifier = Modifier, viewModel: AssistantViewModel = viewModel()) {
     var inputText by remember { mutableStateOf("") }
     
     val templates = listOf(
@@ -74,7 +74,7 @@ fun AssistantChatScreen(viewModel: AssistantViewModel = viewModel()) {
         "Bagaimana Cara Install Mode Anak beserta cara settingnya?"
     )
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = modifier.fillMaxSize().background(MaterialTheme.colorScheme.background)) {
         // Chat Messages
         LazyColumn(
             modifier = Modifier.weight(1f).fillMaxWidth(),
@@ -96,12 +96,12 @@ fun AssistantChatScreen(viewModel: AssistantViewModel = viewModel()) {
                                 bottomStart = if (isUser) 16.dp else 4.dp, 
                                 bottomEnd = if (isUser) 4.dp else 16.dp
                             ))
-                            .background(if (isUser) Color(0xFF005AC1) else Color(0xFFE8F0FE))
+                            .background(if (isUser) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant)
                             .padding(12.dp)
                     ) {
                         Text(
                             text = msg.second,
-                            color = if (isUser) Color.White else Color.Black,
+                            color = if (isUser) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant,
                             fontSize = 15.sp
                         )
                     }
@@ -119,14 +119,14 @@ fun AssistantChatScreen(viewModel: AssistantViewModel = viewModel()) {
                     Surface(
                         modifier = Modifier.padding(end = 8.dp),
                         shape = RoundedCornerShape(16.dp),
-                        color = Color(0xFFEFF4FC),
+                        color = MaterialTheme.colorScheme.secondaryContainer,
                         onClick = { viewModel.sendMessage(template) }
                     ) {
                         Text(
                             text = template,
                             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
                             fontSize = 12.sp,
-                            color = Color(0xFF005AC1)
+                            color = MaterialTheme.colorScheme.onSecondaryContainer
                         )
                     }
                 }
@@ -138,9 +138,9 @@ fun AssistantChatScreen(viewModel: AssistantViewModel = viewModel()) {
                 modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp)
+                CircularProgressIndicator(modifier = Modifier.size(16.dp), strokeWidth = 2.dp, color = MaterialTheme.colorScheme.primary)
                 Spacer(Modifier.width(8.dp))
-                Text("Yogi Ario sedang mengetik...", fontSize = 12.sp, color = Color.Gray)
+                Text("Yogi Ario sedang mengetik...", fontSize = 12.sp, color = MaterialTheme.colorScheme.outline)
             }
         }
 
@@ -158,8 +158,8 @@ fun AssistantChatScreen(viewModel: AssistantViewModel = viewModel()) {
                 placeholder = { Text("Tanya Yogi Ario...") },
                 shape = RoundedCornerShape(24.dp),
                 colors = TextFieldDefaults.outlinedTextFieldColors(
-                    unfocusedBorderColor = Color.LightGray,
-                    focusedBorderColor = Color(0xFF005AC1)
+                    unfocusedBorderColor = MaterialTheme.colorScheme.outline,
+                    focusedBorderColor = MaterialTheme.colorScheme.primary
                 )
             )
             Spacer(Modifier.width(8.dp))
@@ -168,8 +168,8 @@ fun AssistantChatScreen(viewModel: AssistantViewModel = viewModel()) {
                     viewModel.sendMessage(inputText)
                     inputText = ""
                 },
-                containerColor = Color(0xFF005AC1),
-                contentColor = Color.White,
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
                 shape = CircleShape,
                 modifier = Modifier.size(48.dp)
             ) {

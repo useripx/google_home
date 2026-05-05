@@ -16,7 +16,7 @@ class GroqApiClient {
         .readTimeout(30, TimeUnit.SECONDS)
         .build()
 
-    private val apiKey = "<YOUR_GROQ_API_KEY>"
+    private val apiKey = "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"
     private val endpoint = "https://api.groq.com/openai/v1/chat/completions"
 
     private val systemPrompt = """
@@ -67,7 +67,7 @@ class GroqApiClient {
                 messagesArray.put(newMsg)
 
                 val requestBodyJson = JSONObject()
-                requestBodyJson.put("model", "llama3-8b-8192")
+                requestBodyJson.put("model", "llama-3.1-8b-instant")
                 requestBodyJson.put("messages", messagesArray)
                 requestBodyJson.put("temperature", 0.7)
 
@@ -92,7 +92,14 @@ class GroqApiClient {
                     }
                 }
                 
-                return@withContext "Maaf, saya sedang mengalami kendala jaringan saat ini. Silakan coba lagi nanti. (${response.code})"
+                val errorMessage = when(response.code) {
+                    400 -> "Permintaan tidak valid (Error 400). Mohon hubungi pengembang."
+                    401 -> "Kunci API tidak valid (Error 401)."
+                    404 -> "Layanan AI tidak ditemukan (Error 404). Silakan periksa endpoint."
+                    429 -> "Terlalu banyak permintaan. Silakan tunggu sebentar."
+                    else -> "Kesalahan jaringan (${response.code})."
+                }
+                return@withContext "Maaf, saya sedang mengalami kendala: $errorMessage"
             } catch (e: Exception) {
                 e.printStackTrace()
                 return@withContext "Maaf, terjadi kesalahan tak terduga. Mohon periksa koneksi internet Anda."

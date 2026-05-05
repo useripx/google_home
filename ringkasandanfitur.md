@@ -1,6 +1,6 @@
-# Ringkasan Aplikasi & Fitur: Yogi Ario Smart Protection v8.0
+# Ringkasan Aplikasi & Fitur: Yogi Ario Smart Protection v8.1
 
-Dokumen ini disusun untuk analisis AI dan dokumentasi fitur utama aplikasi Google Home Protect (Sayang Anak).
+Dokumen ini disusun untuk analisis AI dan dokumentasi fitur utama aplikasi Google Home Protect (Sayang Anak) versi terbaru.
 
 ## Fitur Utama (v4.0 - AI & Hierarchy)
 
@@ -23,6 +23,7 @@ Dokumen ini disusun untuk analisis AI dan dokumentasi fitur utama aplikasi Googl
 - **Chatbot Terintegrasi**: Menggantikan tab "Safety" dengan asisten virtual interaktif (Yogi Ario) yang ditenagai oleh Groq API (Llama 3).
 - **Panduan & Bantuan**: Menyediakan panduan instalasi, penjelasan fitur, dan jawaban seputar penggunaan aplikasi secara langsung.
 - **Pintasan Cerdas**: Tombol kueri cepat untuk pertanyaan-pertanyaan yang paling sering diajukan oleh orang tua.
+- **Pembaruan v8.1**: Update model ke `llama-3.1-8b-instant` dan perbaikan responsivitas UI chat.
 
 ### 5. Penyamaran Tingkat Lanjut (Stealth Mode)
 - **Dynamic Icon (Kalkulator Palsu)**: Fitur yang memungkinkan perubahan ikon dan nama aplikasi (dari Google Home menjadi Kalkulator) di perangkat anak menggunakan `activity-alias`.
@@ -59,7 +60,9 @@ Dokumen ini disusun untuk analisis AI dan dokumentasi fitur utama aplikasi Googl
 
 ## Arsitektur Teknis
 - **Bahasa**: Kotlin (Jetpack Compose).
-- **Backend**: Firebase Firestore (NoSQL).
+- **Arsitektur**: MVVM (Model-View-ViewModel).
+- **Backend**: Firebase Firestore (NoSQL), Storage, & Auth.
+- **AI Engine**: Groq API (llama-3.1-8b-instant).
 - **Storage Lokal**: Jetpack DataStore.
 - **Peta**: Google Maps SDK for Android.
 - **Layanan Latar Belakang**: Foreground Service (LocationService) untuk mode Kids.

@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [8.1.0] - 2026-05-05
+
+### Perbaikan UI & UX Dashboard
+- **Optimasi Gesture Peta**: Menonaktifkan swipe gesture untuk menu drawer saat berada di tab *Devices* (Map). Pengguna kini dapat berinteraksi dengan peta tanpa terganggu menu yang terbuka tidak sengaja.
+- **Responsivitas Asisten AI**: Memperbaiki tata letak layar *Assistant Chat* agar kotak input teks tidak tertutup oleh bar navigasi bawah.
+- **Konsistensi Dark Mode**: Menyelaraskan tema warna pada menu *Settings* dan elemen UI lainnya. Menghilangkan latar belakang putih yang tidak sinkron saat mode gelap aktif.
+
+### Pembaruan AI (Groq)
+- **Model Upgrade**: Memperbarui model AI ke `llama-3.1-8b-instant` untuk stabilitas dan kecepatan respons yang lebih baik.
+- **Enhanced Error Handling**: Menambahkan logika penanganan error yang lebih detail (400, 401, 404, 429) untuk memberikan informasi jaringan yang akurat kepada pengguna.
+
 ## [8.0.0] - 2026-05-03
 
 ### Integrasi AI & Pembaruan UI
