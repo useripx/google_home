@@ -140,7 +140,27 @@ fun AssistantChatScreen(modifier: Modifier = Modifier, viewModel: AssistantViewM
             }
         }
 
-        // Templates (Kembali ke atas chatbox v9.0)
+        // 1. Tombol + (Posisi Biru - Paling Atas Kanan)
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
+            IconButton(
+                onClick = { viewModel.clearChat() },
+                modifier = Modifier
+                    .size(36.dp)
+                    .background(MaterialTheme.colorScheme.secondaryContainer, CircleShape)
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "New Chat",
+                    tint = MaterialTheme.colorScheme.onSecondaryContainer,
+                    modifier = Modifier.size(20.dp)
+                )
+            }
+        }
+
+        // 2. Templates (Posisi Putih - Di Tengah)
         if (viewModel.messages.size < 3) {
             LazyRow(
                 modifier = Modifier.fillMaxWidth(),
@@ -164,12 +184,12 @@ fun AssistantChatScreen(modifier: Modifier = Modifier, viewModel: AssistantViewM
             }
         }
 
-        // Input Area
+        // 3. Input Area (Posisi Hijau - Paling Bawah)
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalAlignment = Alignment.Bottom
+            verticalAlignment = Alignment.CenterVertically
         ) {
             OutlinedTextField(
                 value = inputText,
@@ -183,35 +203,18 @@ fun AssistantChatScreen(modifier: Modifier = Modifier, viewModel: AssistantViewM
                 )
             )
             Spacer(Modifier.width(8.dp))
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                IconButton(
-                    onClick = { viewModel.clearChat() },
-                    modifier = Modifier
-                        .size(32.dp)
-                        .background(MaterialTheme.colorScheme.secondaryContainer, CircleShape)
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Add,
-                        contentDescription = "New Chat",
-                        tint = MaterialTheme.colorScheme.onSecondaryContainer,
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
-                Spacer(Modifier.height(32.dp)) // Jarak diperbesar agar tombol + lebih naik
-                FloatingActionButton(
-                    onClick = {
-                        viewModel.sendMessage(inputText)
-                        inputText = ""
-                    },
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary,
-                    shape = CircleShape,
-                    modifier = Modifier.size(48.dp)
-                ) {
-                    Icon(Icons.Default.Send, contentDescription = "Send", modifier = Modifier.size(20.dp))
-                }
+            FloatingActionButton(
+                onClick = {
+                    viewModel.sendMessage(inputText)
+                    inputText = ""
+                },
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                shape = CircleShape,
+                modifier = Modifier.size(48.dp)
+            ) {
+                Icon(Icons.Default.Send, contentDescription = "Send", modifier = Modifier.size(20.dp))
             }
         }
-
     }
 }
