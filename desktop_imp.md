@@ -3,7 +3,7 @@
 Rencana ini merinci langkah-langkah teknis untuk membangun aplikasi desktop **Yogi Ario Smart Protection** menggunakan **.NET MAUI** dan **Visual Studio 2022 Enterprise**.
 
 ## 🏗️ Fase 1: Persiapan Lingkungan & Dependensi
-Tujuan: Menyiapkan proyek agar bisa terhubung ke layanan eksternal (Firebase & Groq).
+Tujuan: Menyiapkan proyek agar bisa terhubung ke layanan eksternal (Firebase & AI Service).
 
 1.  **Instalasi Package NuGet**:
     - `Google.Cloud.Firestore`: Untuk sinkronisasi data lokasi real-time.
@@ -41,11 +41,11 @@ Tujuan: Visualisasi lokasi anak di layar PC.
 2.  **Implementasi Heatmap**:
     - Kirim data koordinat dari C# ke JavaScript di WebView untuk merender lapisan heatmap.
 
-## 🤖 Fase 5: Integrasi Groq AI & Audio
+## 🤖 Fase 5: Integrasi AI & Audio
 Tujuan: Memindahkan fitur pintar ke Desktop.
 
-1.  **Groq API Service**:
-    - Buat layanan HTTP Client untuk mengirim pesan ke model `llama-3.1-8b-instant`.
+1.  **AI Service**:
+    - Buat layanan HTTP Client untuk mengirim pesan ke model AI.
     - Tambahkan jeda 5 detik (Task.Delay) sebelum menampilkan respon.
 2.  **Pemutar Audio Darurat**:
     - Gunakan `CommunityToolkit.Maui.MediaElement` untuk memutar audio rekaman darurat yang diunduh dari Firebase Storage.

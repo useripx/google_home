@@ -30,14 +30,14 @@ All notable changes to this project will be documented in this file.
 - **Konsistensi Dark Mode**: Menyelaraskan tema warna pada menu *Settings* dan elemen UI lainnya. Menghilangkan latar belakang putih yang tidak sinkron saat mode gelap aktif.
 - **Fitur Percakapan Baru**: Menambahkan tombol "+" di layar asisten AI untuk memudahkan pengguna membersihkan riwayat chat dan memulai sesi baru.
 
-### Pembaruan AI (Groq)
-- **Model Upgrade**: Memperbarui model AI ke `llama-3.1-8b-instant` untuk stabilitas dan kecepatan respons yang lebih baik.
+### Pembaruan AI
+- **Model Upgrade**: Memperbarui model AI untuk stabilitas dan kecepatan respons yang lebih baik.
 - **Enhanced Error Handling**: Menambahkan logika penanganan error yang lebih detail (400, 401, 404, 429) untuk memberikan informasi jaringan yang akurat kepada pengguna.
 
 ## [8.0.0] - 2026-05-03
 
 ### Integrasi AI & Pembaruan UI
-- **Asisten AI Yogi Ario**: Mengganti tab *Safety* dengan *Chatbot* interaktif yang ditenagai oleh Groq API (Llama 3). AI ini didesain khusus untuk membantu orang tua memahami fitur aplikasi dan memandu proses instalasi di HP anak.
+- **Asisten AI Yogi Ario**: Mengganti tab *Safety* dengan *Chatbot* interaktif yang ditenagai oleh AI Engine (Model 3.1). AI ini didesain khusus untuk membantu orang tua memahami fitur aplikasi dan memandu proses instalasi di HP anak.
 - **Pintasan Pertanyaan (Chips)**: Menambahkan tombol *template* pertanyaan di layar *chat* untuk mempermudah orang tua bertanya seputar Mode Anak, Geofencing, dan fitur lainnya.
 - **Relokasi Fitur Keamanan**: Memindahkan pengaturan konfigurasi Geofence ke tab *Settings* agar antarmuka obrolan AI bisa tampil maksimal.
 - **Branding Lengkap v8.0**: Mengubah semua label versi pada aplikasi menjadi versi 8.0.

@@ -41,10 +41,10 @@ Dokumen ini disusun untuk analisis AI dan dokumentasi fitur utama aplikasi Googl
 
 ### 4. Asisten AI Pintar (v8.0)
 
-- **Chatbot Terintegrasi**: Menggantikan tab "Safety" dengan asisten virtual interaktif (Yogi Ario) yang ditenagai oleh Model 3.1.
+- **Chatbot Terintegrasi**: Menggantikan tab "Safety" dengan asisten virtual interaktif (Yogi Ario) yang ditenagai oleh AI Engine (Model 3.1).
 - **Panduan & Bantuan**: Menyediakan panduan instalasi, penjelasan fitur, dan jawaban seputar penggunaan aplikasi secara langsung.
 - **Pintasan Cerdas**: Tombol kueri cepat untuk pertanyaan-pertanyaan yang paling sering diajukan oleh orang tua.
-- **Pembaruan v8.1**: Update model ke `llama-3.1-8b-instant` dan perbaikan responsivitas UI chat.
+- **Pembaruan v8.1**: Update model AI dan perbaikan responsivitas UI chat.
 
 ### 5. Penyamaran Tingkat Lanjut (Stealth Mode)
 

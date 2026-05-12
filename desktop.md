@@ -29,7 +29,7 @@ Aplikasi desktop harus terhubung ke Firebase yang sama dengan aplikasi Android:
 - **ETA**: Porting logika kalkulasi ETA dari Kotlin ke C#.
 
 ### 2. Chat Assistant (Yogi Ario AI)
-- **Engine**: Groq API (Llama-3.1-8b-instant).
+- **Engine**: AI Engine (Model 3.1).
 - **UX**: Implementasikan animasi mengetik dan jeda 5 detik untuk konsistensi dengan versi mobile.
 - **History**: Chat history bisa disimpan secara lokal (SQLite/LiteDB) atau di Firestore.
 
@@ -44,7 +44,7 @@ Aplikasi desktop harus terhubung ke Firebase yang sama dengan aplikasi Android:
 2. **Desain UI** menggunakan XAML (sesuaikan dengan estetika Dark Mode aplikasi Android).
 3. **Pindahkan Logika Bisnis**:
    - Konversi `FirebaseRepository.kt` menjadi `FirebaseService.cs`.
-   - Konversi `GroqApiClient.kt` menjadi `GroqService.cs`.
+   - Konversi `AIClient.kt` menjadi `AIService.cs`.
 4. **Optimasi Performa**: Gunakan *Async/Await* untuk memastikan UI Windows tidak membeku saat mengambil data peta yang besar.
 
 ## 🔗 Referensi Repositori
