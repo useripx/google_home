@@ -16,7 +16,7 @@ class AIClient {
         .readTimeout(30, TimeUnit.SECONDS)
         .build()
 
-    private val authKey = "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"
+    private val authKey = "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"
     private val apiEndpoint = "https://api.groq.com/openai/v1/chat/completions"
     private val MODEL_NAME = "llama-3.1-8b-instant"
 
