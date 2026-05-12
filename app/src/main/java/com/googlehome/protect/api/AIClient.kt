@@ -10,14 +10,15 @@ import org.json.JSONArray
 import org.json.JSONObject
 import java.util.concurrent.TimeUnit
 
-class GroqApiClient {
+class AIClient {
     private val client = OkHttpClient.Builder()
         .connectTimeout(30, TimeUnit.SECONDS)
         .readTimeout(30, TimeUnit.SECONDS)
         .build()
 
-    private val apiKey = "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"
-    private val endpoint = "https://api.groq.com/openai/v1/chat/completions"
+    private val authKey = "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"
+    private val apiEndpoint = "https://api.groq.com/openai/v1/chat/completions"
+    private val MODEL_NAME = "llama-3.1-8b-instant"
 
     private val systemPrompt = """
         Anda adalah Yogi Ario, Asisten AI resmi untuk aplikasi Yogi Ario Smart Protection. 
@@ -67,7 +68,7 @@ class GroqApiClient {
                 messagesArray.put(newMsg)
 
                 val requestBodyJson = JSONObject()
-                requestBodyJson.put("model", "llama-3.1-8b-instant")
+                requestBodyJson.put("model", MODEL_NAME)
                 requestBodyJson.put("messages", messagesArray)
                 requestBodyJson.put("temperature", 0.7)
 
@@ -75,8 +76,8 @@ class GroqApiClient {
                 val body = requestBodyJson.toString().toRequestBody(mediaType)
 
                 val request = Request.Builder()
-                    .url(endpoint)
-                    .addHeader("Authorization", "Bearer ${apiKey}")
+                    .url(apiEndpoint)
+                    .addHeader("Authorization", "Bearer ${authKey}")
                     .post(body)
                     .build()
 

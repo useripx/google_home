@@ -63,5 +63,9 @@ class MainViewModel(private val modeManager: ModeManager) : ViewModel() {
                 }
             }
         }
+    fun saveParentId(id: String) {
+        viewModelScope.launch {
+            modeManager.setParentId(id)
+        }
     }
 }

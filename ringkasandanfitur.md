@@ -1,10 +1,15 @@
-# Ringkasan Aplikasi & Fitur: Yogi Ario Smart Protection v9.0
+# Ringkasan Aplikasi & Fitur: Yogi Ario Smart Protection v10.0
 
 Dokumen ini disusun untuk analisis AI dan dokumentasi fitur utama aplikasi Google Home Protect (Sayang Anak) versi terbaru.
 
-## Fitur Unggulan v9.0 (Baru)
+## Fitur Unggulan v10.0 (Baru)
 
-### 1. Heatmap History (Analisis Jejak Lokasi)
+### 1. Keamanan Otorisasi (OTP Activation)
+
+- **Verifikasi Kode Unik**: Menambahkan gerbang keamanan di mana Mode Orang Tua wajib memasukkan kode aktivasi yang diverifikasi langsung ke database sebelum dapat mengakses dashboard.
+- **Auto-Registration Perangkat Anak**: Begitu orang tua terverifikasi, perangkat anak yang mereka tambahkan akan otomatis terdaftar di bawah akun mereka di database tanpa perlu input manual di sisi admin.
+
+### 2. Heatmap History (Analisis Jejak Lokasi)
 
 - **Visualisasi Peta Panas**: Menampilkan area yang paling sering dikunjungi anak dengan gradasi warna di atas peta.
 - **Wawasan Orang Tua**: Membantu mengidentifikasi lokasi "nongkrong" anak secara visual tanpa harus melihat log koordinat satu per satu.
@@ -36,10 +41,10 @@ Dokumen ini disusun untuk analisis AI dan dokumentasi fitur utama aplikasi Googl
 
 ### 4. Asisten AI Pintar (v8.0)
 
-- **Chatbot Terintegrasi**: Menggantikan tab "Safety" dengan asisten virtual interaktif (Yogi Ario) yang ditenagai oleh Model 3.1.
+- **Chatbot Terintegrasi**: Menggantikan tab "Safety" dengan asisten virtual interaktif (Yogi Ario) yang ditenagai oleh AI Engine (Model 3.1).
 - **Panduan & Bantuan**: Menyediakan panduan instalasi, penjelasan fitur, dan jawaban seputar penggunaan aplikasi secara langsung.
 - **Pintasan Cerdas**: Tombol kueri cepat untuk pertanyaan-pertanyaan yang paling sering diajukan oleh orang tua.
-- **Pembaruan v8.1**: Update model ke `llama-3.1-8b-instant` dan perbaikan responsivitas UI chat.
+- **Pembaruan v8.1**: Update model AI dan perbaikan responsivitas UI chat.
 
 ### 5. Penyamaran Tingkat Lanjut (Stealth Mode)
 

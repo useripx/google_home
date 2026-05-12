@@ -112,7 +112,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
         gesturesEnabled = selectedTab != 0,
         drawerContent = {
             ModalDrawerSheet {
-                Text("Yogi Ario Protection v9.0", modifier = Modifier.padding(16.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold)
+                Text("Yogi Ario Protection v10.0", modifier = Modifier.padding(16.dp), fontSize = 20.sp, fontWeight = FontWeight.Bold)
                 HorizontalDivider()
                 NavigationDrawerItem(
                     label = { Text("Profile") },
@@ -414,7 +414,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                                             zIndex = 1f
                                         )
                                         
-                                        // Heatmap Layer (v9.0)
+                                        // Heatmap Layer (v10.0)
                                         val heatmapTileProvider = remember(historyPoints) {
                                             HeatmapTileProvider.Builder()
                                                 .data(historyPoints)
@@ -470,7 +470,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                     }
                 }
                 1 -> {
-                    // ASISTEN AI SCREEN (v9.0)
+                    // ASISTEN AI SCREEN (v10.0)
                     AssistantChatScreen(modifier = Modifier.padding(innerPadding))
                 }
                 2 -> {
@@ -644,7 +644,7 @@ fun ParentDashboard(viewModel: ParentViewModel) {
                             
                             Spacer(Modifier.height(32.dp))
                             Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
-                                Text("Yogi Ario Protection v9.0", color = Color.Gray, fontSize = 12.sp)
+                                Text("Yogi Ario Protection v10.0", color = Color.Gray, fontSize = 12.sp)
                                 Text("Status Firebase: Connected", color = Color(0xFF4CAF50), fontSize = 11.sp)
                             }
                         }

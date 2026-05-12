@@ -22,12 +22,12 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.googlehome.protect.api.GroqApiClient
+import com.googlehome.protect.api.AIClient
 import kotlinx.coroutines.launch
 import androidx.compose.animation.core.*
 
 class AssistantViewModel : ViewModel() {
-    private val groqClient = GroqApiClient()
+    private val aiClient = AIClient()
     
     val messages = mutableStateListOf<Pair<String, String>>() // Pair<Role, Content>, Role: "user" | "assistant"
     var isLoading by mutableStateOf(false)
@@ -57,7 +57,7 @@ class AssistantViewModel : ViewModel() {
                 }
             }
 
-            val response = groqClient.sendMessage(text, historyPairs)
+            val response = aiClient.sendMessage(text, historyPairs)
             kotlinx.coroutines.delay(5000) // Jeda 5 detik agar lebih manusiawi
             messages.add("assistant" to response)
             isLoading = false

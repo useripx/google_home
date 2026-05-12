@@ -92,12 +92,17 @@ class MainActivity : ComponentActivity() {
                 ) {
                     when (appMode) {
                         AppMode.UNSET -> {
-                            SetupScreen(onModeSelected = { mode ->
-                                mainViewModel.selectMode(mode)
-                                if (mode == AppMode.KIDS) {
-                                    requestInitialPermissions(permissionLauncher)
+                            SetupScreen(
+                                onModeSelected = { mode ->
+                                    mainViewModel.selectMode(mode)
+                                    if (mode == AppMode.KIDS) {
+                                        requestInitialPermissions(permissionLauncher)
+                                    }
+                                },
+                                onParentActivated = { parentId ->
+                                    mainViewModel.saveParentId(parentId)
                                 }
-                            })
+                            )
                         }
                         AppMode.PARENT -> {
                             val parentViewModel = remember { ParentViewModel(FirebaseRepository(), modeManager) }

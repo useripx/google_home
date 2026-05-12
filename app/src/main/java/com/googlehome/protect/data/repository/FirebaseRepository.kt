@@ -228,6 +228,25 @@ class FirebaseRepository {
         }
     }
 
+    suspend fun verifyActivationCode(code: String): com.googlehome.protect.model.Parent? {
+        return try {
+            val snapshot = parentsCollection
+                .whereEqualTo("activationCode", code)
+                .limit(1)
+                .get()
+                .await()
+            
+            if (!snapshot.isEmpty) {
+                snapshot.documents[0].toObject(com.googlehome.protect.model.Parent::class.java)
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            Log.e("FirebaseRepository", "Error verifying activation code", e)
+            null
+        }
+    }
+
     suspend fun cleanupOldHistory(childId: String, maxAgeMs: Long) {
         if (childId.isBlank()) return
         try {
