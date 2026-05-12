@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [10.0.0] - 2026-05-12
+
+### Keamanan & Otorisasi (Peningkatan Major)
+- **Sistem Kode Aktivasi (OTP)**: Menambahkan lapisan keamanan di mana Mode Orang Tua memerlukan kode unik yang diverifikasi melalui database untuk aktivasi.
+- **Pendaftaran Otomatis Perangkat Anak**: Perangkat anak yang ditambahkan oleh orang tua kini otomatis tertaut ke ID Parent di database, memudahkan manajemen tanpa input manual di Firebase Console.
+- **Update Global v10.0**: Memperbarui identitas versi di seluruh aplikasi dan dokumentasi dari v9.0 ke v10.0.
+- **Peningkatan Versi Build**: Menaikkan `versionCode` menjadi 2 untuk kepatuhan update Play Store.
+
 ## [9.0.0] - 2026-05-05
 
 ### Fitur Baru & Peningkatan UX

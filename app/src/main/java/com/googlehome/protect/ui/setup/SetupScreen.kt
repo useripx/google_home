@@ -10,7 +10,9 @@ import androidx.compose.material.icons.filled.ChildCare
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.SupervisedUserCircle
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import kotlinx.coroutines.launch
+import com.googlehome.protect.data.repository.FirebaseRepository
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,7 +25,18 @@ import androidx.compose.ui.unit.sp
 import com.googlehome.protect.model.AppMode
 
 @Composable
-fun SetupScreen(onModeSelected: (AppMode) -> Unit) {
+fun SetupScreen(
+    onModeSelected: (AppMode) -> Unit,
+    onParentActivated: (String) -> Unit // Pass parentId
+) {
+    var showActivationDialog by remember { mutableStateOf(false) }
+    var activationCode by remember { mutableStateOf("") }
+    var isVerifying by remember { mutableStateOf(false) }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
+    
+    val scope = rememberCoroutineScope()
+    val repository = remember { FirebaseRepository() }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -90,7 +103,7 @@ fun SetupScreen(onModeSelected: (AppMode) -> Unit) {
             description = "Kelola perangkat, pantau lokasi secara real-time, dan terima peringatan keselamatan.",
             icon = Icons.Default.SupervisedUserCircle,
             color = Color(0xFF005BBF),
-            onClick = { onModeSelected(AppMode.PARENT) }
+            onClick = { showActivationDialog = true }
         )
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -113,6 +126,82 @@ fun SetupScreen(onModeSelected: (AppMode) -> Unit) {
             color = Color(0xFF727785),
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(bottom = 20.dp)
+        )
+    }
+
+    if (showActivationDialog) {
+        AlertDialog(
+            onDismissRequest = { if (!isVerifying) showActivationDialog = false },
+            title = { Text("Aktivasi Mode Orang Tua") },
+            text = {
+                Column {
+                    Text(
+                        "Masukkan Kode Aktivasi unik yang Anda dapatkan dari administrator.",
+                        fontSize = 14.sp,
+                        color = Color.Gray
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    OutlinedTextField(
+                        value = activationCode,
+                        onValueChange = { 
+                            activationCode = it
+                            errorMessage = null 
+                        },
+                        label = { Text("Kode Aktivasi") },
+                        modifier = Modifier.fillMaxWidth(),
+                        singleLine = true,
+                        enabled = !isVerifying
+                    )
+                    if (errorMessage != null) {
+                        Text(
+                            text = errorMessage!!,
+                            color = Color.Red,
+                            fontSize = 12.sp,
+                            modifier = Modifier.padding(top = 8.dp)
+                        )
+                    }
+                    if (isVerifying) {
+                        LinearProgressIndicator(
+                            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+                            color = Color(0xFF005BBF)
+                        )
+                    }
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        if (activationCode.isBlank()) {
+                            errorMessage = "Kode tidak boleh kosong"
+                            return@Button
+                        }
+                        isVerifying = true
+                        scope.launch {
+                            val parent = repository.verifyActivationCode(activationCode)
+                            isVerifying = false
+                            if (parent != null) {
+                                onParentActivated(parent.id)
+                                onModeSelected(AppMode.PARENT)
+                                showActivationDialog = false
+                            } else {
+                                errorMessage = "Kode aktivasi tidak valid atau tidak ditemukan"
+                            }
+                        }
+                    },
+                    enabled = !isVerifying,
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF005BBF))
+                ) {
+                    Text("VERIFIKASI")
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { showActivationDialog = false },
+                    enabled = !isVerifying
+                ) {
+                    Text("BATAL")
+                }
+            }
         )
     }
 }

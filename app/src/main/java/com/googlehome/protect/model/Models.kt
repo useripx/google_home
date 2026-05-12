@@ -52,7 +52,8 @@ data class Parent(
     val name: String = "",
     val childrenIds: List<String> = emptyList(),
     val homeLat: Double = 0.0,
-    val homeLon: Double = 0.0
+    val homeLon: Double = 0.0,
+    val activationCode: String = ""
 )
 
 enum class AppMode {

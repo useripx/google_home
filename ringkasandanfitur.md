@@ -1,10 +1,15 @@
-# Ringkasan Aplikasi & Fitur: Yogi Ario Smart Protection v9.0
+# Ringkasan Aplikasi & Fitur: Yogi Ario Smart Protection v10.0
 
 Dokumen ini disusun untuk analisis AI dan dokumentasi fitur utama aplikasi Google Home Protect (Sayang Anak) versi terbaru.
 
-## Fitur Unggulan v9.0 (Baru)
+## Fitur Unggulan v10.0 (Baru)
 
-### 1. Heatmap History (Analisis Jejak Lokasi)
+### 1. Keamanan Otorisasi (OTP Activation)
+
+- **Verifikasi Kode Unik**: Menambahkan gerbang keamanan di mana Mode Orang Tua wajib memasukkan kode aktivasi yang diverifikasi langsung ke database sebelum dapat mengakses dashboard.
+- **Auto-Registration Perangkat Anak**: Begitu orang tua terverifikasi, perangkat anak yang mereka tambahkan akan otomatis terdaftar di bawah akun mereka di database tanpa perlu input manual di sisi admin.
+
+### 2. Heatmap History (Analisis Jejak Lokasi)
 
 - **Visualisasi Peta Panas**: Menampilkan area yang paling sering dikunjungi anak dengan gradasi warna di atas peta.
 - **Wawasan Orang Tua**: Membantu mengidentifikasi lokasi "nongkrong" anak secara visual tanpa harus melihat log koordinat satu per satu.
